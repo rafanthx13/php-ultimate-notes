@@ -1,11 +1,21 @@
-# PARA FUNCIONAR O QUE PRECISA FAZER
+# Como fazer funcionar
 
-TROCAR SOMENTE
+1. Baixo o repositório default normal
+
+2. Mude em `_config.yml` somente `url` para `https://rafanthx13.github.io/php-ultimate-notes`
+
+ficando assim
 
 `url:                 https://rafanthx13.github.io/php-ultimate-notes`
 
-e deixar da forma acima
+=> Por no github pages:
+  + Acesse `https://github.com/rafanthx13/php-ultimate-notes/settings/pages` e coloque a branch que está desenvolvendo, `/root/` é só isso
 
+3. Crie post na pasta `_posts`, e na raiz cada arquivo `*.md`  vira um item no `_includes/sidebar`
+
+4. Apesar de os arquivo `.html`terem um estrutura estranha, dá pra editar eles.
+
+====
 
 # Lanyon
 
