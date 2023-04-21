@@ -3,12 +3,7 @@ title:               Lanyon
 tagline:             'A Jekyll theme'
 description:         'A reserved <a href="https://jekyllrb.com" target="_blank">Jekyll</a> theme that places the utmost gravity on content with a hidden drawer. Made by <a href="https://twitter.com/mdo" target="_blank">@mdo</a>.'
 url:                 'http://rafanthx13.github.io'
-# https://rafanthx13.github.io/php-ultimate-notes/
 baseurl:             ''
-# 'http://rafanthx13.github.io/php-utimate-notes/'
-
-# EM Dev: Use baseurl : '' ; Para Deploy http://rafanthx13.github.io/php-ultimate-notes/
-
 
 paginate:            5
 permalink:           pretty
@@ -26,3 +21,7 @@ plugins:
 # Custom vars
 version:             1.1.0
 google_analytics_id: #UA-XXXX-Y
+
+# https://rafanthx13.github.io/php-ultimate-notes/
+# 'http://rafanthx13.github.io/php-utimate-notes/'
+# EM Dev: Use baseurl : '' ; Para Deploy http://rafanthx13.github.io/php-ultimate-notes/
