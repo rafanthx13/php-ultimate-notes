@@ -5,6 +5,7 @@ _site
 .jekyll-cache
 
 # Numerous always-ignore extensions
+*.pdf
 *.diff
 *.err
 *.orig
