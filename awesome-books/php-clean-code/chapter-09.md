@@ -1,24 +1,42 @@
-# Organizing PHP Quality Tools - CHapter 9
+# 09 - Organizing PHP Quality Tools
 
-Nesse capitulo vamos aprende coomo configurar da melhor formas essa ferramenas de qualiade de sofware do PHP no nosso preojeot, iremos ver 3 formas: composer, phar files e pHive
+## Intro
 
-•	 Installing code quality tools using Composer
-•	 Installing code quality tools as phar files
-•	 Managing phar files using the PHAR Installation and Verification Environment (Phive)
+Nesse capitulo vamos aprender como configurar da melhor formas essa ferramentas de qualidade de software do PHP no nosso projeto, iremos ver 3 formas:
 
-**Só irei lsitar o compsoer**
+1 -  composer,
+
+2 -  phar files
+
+3 -  pHive
+
+**Só irei mostrar como fazer pelo composer**
+
++ Installing code quality tools using Composer
++ Installing code quality tools as phar files
++ Managing phar files using the PHAR Installation and Verification Environment (Phive)
+
+
 
 ## Installing code quality tools using Composer
 
+```
 $ composer require phpmetrics/phpmetrics --dev
+```
 
-**Ovce poed baisar o phpmetrics também de forma global**
+**Você pode baixar o phpmetrics também de forma global**
 
+```
 $ composer global update
+```
 
+```
 $ composer global require phpmetrics/phpmetrics
+```
 
-### COnfigurar composer.json
+
+
+### Configurar `composer.json`
 
 ````json
 {
@@ -32,10 +50,9 @@ $ composer global require phpmetrics/phpmetrics
 }
 ````
 
-If you want to share these Composer commands, you might want to add a short description text as
-well, which is displayed when you execute composer list to see a list of available commands.
-To do that, you need to add the script-descriptions section to your composer.json file.
-For the previously introduced analyze command, it could look like this:
+Se você deseja compartilhar esses comandos do Composer, talvez queira adicionar também um breve texto de descrição, que será exibido quando você executar o comando composer list para ver uma lista de comandos disponíveis.
+
+Para fazer isso, você precisa adicionar a seção script-descriptions ao seu arquivo `composer.json`. Para o comando analyze introduzido anteriormente, poderia ser algo assim:
 
 ````json
 {
@@ -52,13 +69,12 @@ For the previously introduced analyze command, it could look like this:
 
 ## Summary
 
-Composer is an indispensable part of today’s PHP world. The usual approach to adding code quality
-tools to your project is by adding them to the require-dev section of the dependencies, which
-works fine in many cases.
-However, Composer is not the one and only way there is. Therefore, in this chapter, we introduced two
-more options to manage your code quality tools: by adding the phar files manually to your project,
-or by utilizing Phive to manage the phar files.
-You are probably eager to apply all your gained knowledge to your code now. However, relentless
-refactoring can do more harm than good, and clicking through all parts of your application after every
-change to check if anything broke will cost you a lot of time and can be very frustrating. Thus, in the
-next chapter, we will show you how automated testing can help you here.
+O Composer é uma parte indispensável do mundo PHP atual. A abordagem usual para adicionar ferramentas de qualidade de código ao seu projeto é adicioná-las à seção require-dev das dependências, o que funciona bem em muitos casos.
+
+No entanto, o Composer não é a única opção disponível. Portanto, neste capítulo, apresentamos mais duas opções para gerenciar suas ferramentas de qualidade de código: adicionando manualmente os arquivos phar ao seu projeto ou utilizando o Phive para gerenciar os arquivos phar.
+
+Você provavelmente está ansioso para aplicar todo o conhecimento adquirido ao seu código agora. No entanto, refatorar implacavelmente pode causar mais danos do que benefícios, e clicar em todas as partes de sua aplicação após cada alteração para verificar se algo quebrou exigirá muito tempo e pode ser muito frustrante. Portanto, no próximo capítulo, mostraremos como os testes automatizados podem ajudar nesse sentido.
+
+## Meu Resumo
+
+Esse cap apresenta outras formas de usar as ferramentas de qualidades: arquivos phar e phive.

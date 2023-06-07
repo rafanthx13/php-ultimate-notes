@@ -1,32 +1,30 @@
-## CHapter 11 - COntinuous Integation
+## Chapter 11 - Continuous Integation
 
 
-## Itro ao que vamos ver
+## Intro ao que vamos ver
 
-In the following pages, we will elaborate on continuous integration (CI) and learn by example how to set up a simple but effective automated workflow.
+Neste capítulo, iremos elaborar sobre integração contínua (CI) e aprender através de exemplos como configurar um fluxo de trabalho automatizado simples, mas eficaz.
 
-Furthermore, we will show you how to set up a selection of code quality tools locally in a way that
-they support you the most, without having to manually run them. Additionally, we will tell you some
-best practices about how to add these workflows to an existing project.
+Além disso, vamos mostrar como configurar uma seleção de ferramentas de qualidade de código localmente, de modo que elas ofereçam o máximo de suporte, sem a necessidade de executá-las manualmente. Além disso, compartilharemos algumas melhores práticas sobre como adicionar esses fluxos de trabalho a um projeto existente.
 
-The main topics we will cover are listed here:
+Os principais tópicos que iremos abordar estão listados aqui:
 
-•	 Why you need CI
-•	 The build pipeline
-•	 Building a pipeline with GitHub Actions
-•	 Your local pipeline—Git hooks
-•	 Excursion—Adding CI to existing software
-•	 An outlook on continuous delivery (CD)
++ Why you need CI
++ The build pipeline
++ Building a pipeline with GitHub Actions
++ Your local pipeline—Git hooks
++ Excursion—Adding CI to existing software
++ An outlook on continuous delivery (CD)
 
 ## Why you need CI
 
-Uma grande do nosso trabalho como desenvolvedor é corrigir bugs, dár manutençâo e aplicar mudanças no software. Entregar um software livre de erros é algo que provavelmente todos os desenvolvedores gostariam de alcançar. Não cometemos erros intencionalmente, mas eles sempre acontecerão. No entanto, existem maneiras de reduzir os custos dos erros.
+Uma grande do nosso trabalho como desenvolvedor é corrigir bugs, dár manutenção e aplicar mudanças no software. Entregar um software livre de erros é algo que provavelmente todos os desenvolvedores gostariam de alcançar. Não cometemos erros intencionalmente, mas eles sempre acontecerão. No entanto, existem maneiras de reduzir os custos dos erros.
 
 ### Custo de Bugs
 
-Bugs são custosos pois sâo difícies de achar  e gastam o tempo do prograrmador apra concertar algo que á se espera dar certo. É bom quando se é cpaz de pegar o bug no início, mas , muitas vezes é necessário o program ser raodad das mais diversas formas para capturar ele. 
+Bugs são custosos, pois são difíceis de achar e gastam o tempo do programador para consertar algo que a se espera dar certo. É bom quando se é capaz de pegar o bug no início, mas, muitas vezes é necessário o programa ser rodado das mais diversas formas para capturar ele. 
 
-Os custos de bugs crescem a medi que fnaliza o SDL (Software Development Cycle).
+Os custos de bugs crescem a medida que desenvolve o sistema.
 
 A razão para o aumento maciço de custos ao longo do tempo é devida a diversos fatores. No início, os custos estão principalmente relacionados ao tempo necessário para resolver o problema. Se um bug poderia ter sido evitado com requisitos melhores, por exemplo, menos esforço seria necessário, pois ele seria descoberto durante os testes manuais. No entanto, se um bug é encontrado em produção, várias pessoas estão envolvidas em sua correção: um funcionário do suporte precisa reconhecer o bug relatado por um cliente e encaminhá-lo para um engenheiro de garantia de qualidade (QA), que o reproduz e escreve um ticket adequado para o bug.
 
@@ -40,17 +38,16 @@ Felizmente, agora temos uma caixa de ferramentas completa ao nosso lado que pode
 
 É claro que você poderia executar todas as ferramentas manualmente antes de cada implantação. Vamos supor que você queira implantar algum código em produção. Após mesclar o código na ramificação principal, as seguintes etapas devem ser executadas para garantir que nenhum código com erros seja entregue em produção:
 
-1.  Usar o PHP linterpara garantir a corretude sintática do código.
+1.  Usar o PHPlinter para garantir a corretude sintática do código.
 2.  Executar um code style checker para manter a formatação do código alinhada.
 3.  Encontrar possíveis problemas usando análise de código estático.
 4.  Executar todos os conjuntos de testes automatizados para garantir que seu código ainda funcione.
 5.  Criar relatórios para as métricas de qualidade de código usadas.
 6.  Limpar a pasta de compilação e criar um arquivo compactado do código para implantar.
 
-Sâo muitos passos a serem executados para subir um código com a certeza qe está correto e livre de bugs. POr isos, é necessário criar um script para executar tudo isso em sequência além de subir a alteraçâo. EIsso é a motvaçao para C (COntinous Integration)
+**São muitos passos a serem executados para subir um código com a certeza que está correto e livre de bugs. Por isso, é necessário criar um script para executar tudo isso em sequência além de subir a alteração. Isso é a motivação para CI (Continous Integration) : Fazer tudo isso automatizado.**
 
-### INtoduzindo CI
-
+### Introduzindo CI
 
 Isso é precisamente o que o CI faz: ele descreve o processo automatizado de reunir todos os componentes necessários de sua aplicação em um pacote entregável para que possa ser implantado nos ambientes desejados. Durante o processo, verificações automatizadas garantirão a qualidade geral do código. É importante ter em mente que, se uma das verificações falhar, toda a construção será considerada como falha.
 
@@ -58,31 +55,31 @@ Existem muitas ferramentas de CI disponíveis, como o Jenkins, que geralmente é
 
 Configurar uma dessas ferramentas pode parecer muito trabalho, mas também possui grandes benefícios, como os seguintes:
 
--   Escalabilidade: Se você trabalha em equipe, usar a configuração local rapidamente causará problemas. Qualquer alteração no processo de construção precisaria ser feita no computador de cada desenvolvedor. Embora o script de construção faça parte do seu repositório, as pessoas podem esquecer de puxar as alterações mais recentes antes de implantar, ou algo pode dar errado.
+-   **Escalabilidade:** Se você trabalha em equipe, usar a configuração local rapidamente causará problemas. Qualquer alteração no processo de construção precisaria ser feita no computador de cada desenvolvedor. Embora o script de construção faça parte do seu repositório, as pessoas podem esquecer de puxar as alterações mais recentes antes de implantar, ou algo pode dar errado.
     
--   Velocidade: Testes automatizados ou análise de código estático consomem bastante recursos. Embora os computadores atuais sejam poderosos, eles precisam realizar muitas tarefas simultâneas, e você não deseja executar adicionalmente um pipeline de construção em seu sistema local. Os servidores de CI/CD fazem apenas esse trabalho e geralmente o fazem rapidamente. E mesmo que sejam lentos, eles ainda aliviam a carga do seu sistema local.
+-   **Velocidade:** Testes automatizados ou análise de código estático consomem bastante recursos. Embora os computadores atuais sejam poderosos, eles precisam realizar muitas tarefas simultâneas, e você não deseja executar adicionalmente um pipeline de construção em seu sistema local. Os servidores de CI/CD fazem apenas esse trabalho e geralmente o fazem rapidamente. E mesmo que sejam lentos, eles ainda aliviam a carga do seu sistema local.
     
--   Não bloqueante: Você precisa de um ambiente de construção para executar todas as ferramentas e verificações em seu código. Usar seu ambiente de desenvolvimento local para isso simplesmente o bloqueará durante a construção, especialmente quando você usa tipos de teste mais lentos, como testes de integração ou ponta a ponta (E2E). Executar dois ambientes em seu sistema local - um para desenvolvimento e outro para CI/CD - não é recomendado, pois você rapidamente ficará preso em um inferno de configuração (apenas pense em bloquear um banco de dados ou portas do servidor web).
+-   **Não bloqueante:** Você precisa de um ambiente de construção para executar todas as ferramentas e verificações em seu código. Usar seu ambiente de desenvolvimento local para isso simplesmente o bloqueará durante a construção, especialmente quando você usa tipos de teste mais lentos, como testes de integração ou ponta a ponta (E2E). Executar dois ambientes em seu sistema local - um para desenvolvimento e outro para CI/CD - não é recomendado, pois você rapidamente ficará preso em um inferno de configuração (apenas pense em bloquear um banco de dados ou portas do servidor web).
     
--   Monitoramento: Usar um servidor dedicado de CI/CD permitirá que você mantenha uma visão geral de quem implantou o quê e quando. Imagine que seu sistema de produção esteja de repente com problemas - usando um servidor de CI/CD, você pode ver imediatamente quais foram as últimas alterações e implantar a versão anterior de sua aplicação com alguns cliques. Além disso, as ferramentas de CI/CD mantêm você atualizado e informam você, por exemplo, por e-mail ou por meio do seu aplicativo de mensagens favorito, sobre quaisquer atividades de construção e implantação.
+-   **Monitoramento:** Usar um servidor dedicado de CI/CD permitirá que você mantenha uma visão geral de quem implantou o quê e quando. Imagine que seu sistema de produção esteja de repente com problemas - usando um servidor de CI/CD, você pode ver imediatamente quais foram as últimas alterações e implantar a versão anterior de sua aplicação com alguns cliques. Além disso, as ferramentas de CI/CD mantêm você atualizado e informam você, por exemplo, por e-mail ou por meio do seu aplicativo de mensagens favorito, sobre quaisquer atividades de construção e implantação.
     
--   Gerenciamento: Um script de implantação feito à mão certamente fará o trabalho, mas leva muito tempo para torná-lo tão conveniente e flexível
+-   **Gerenciamento:** Um script de implantação feito à mão certamente fará o trabalho, mas leva muito tempo para torná-lo tão conveniente e flexível
 
 ## The build pipeline
 
-É então necessário contruir um pipeline. Ele terár como entrda a acplicaçao com o código alterado e passará por várias ferramentas até está no ponto apto ao deploy.
+É então necessário construir um pipeline. Ele terá como entrada a aplicação com o código alterado e passará por várias ferramentas até está no ponto apto ao deploy.
 
-### Stage 1: Buold Project
+### Stage 1: Build Project
 
-Para realizar todas essas etaps será necessário ter o ambiente totalemtne funcionar. Iss é possível através de COntainerzaçao, Docker e instalar todas as dependeicas necessárias para a aplicaçao funcinar: pois. além de verificaão estática de codigo pode ser necessário o ambietne totalmetne pronto arpara execuar testes E2E.
+Para realizar todas essas etapas será necessário ter o ambiente totalmente funcionar. Isso é possível via Conteinerização, Docker e instalar todas as dependências necessárias para a aplicação funcionar: pois. Além de verificação estática de código pode ser necessário o ambiente totalmente pronto arpara executar testes E2E.
 
-### Stage 2: COde ANalysis
+### Stage 2: Code Analysis
 
-Consiste em usar as ferarmentas que vimos no capítulo 7:
+Consiste em usar as ferramentas que vimos no capítulo 7:
 
-+ PHP linter (verificar intaze)
++ PHP linter (verificar sintaxe)
 + Check code style PHP Coding Standards
-Fixer (PHP-CS-Fixer)
++ Fixer (PHP-CS-Fixer)
 + Gerar as análises estáticas de código.
 
 ### Stage 3 – Tests
@@ -94,7 +91,7 @@ Rodar:
 
 ### Stage 4 - Deploy
 
-Limapr tuddo das etapas anteriores que agora nâo sâo mais necessária e fazer o deploy
+Limpar tudo das etapas anteriores que agora não são mais necessária e fazer o deploy
 
 ### Integrating the pipeline into your workflow
 
@@ -106,15 +103,13 @@ Executar um build requer algum tempo e, é claro, os desenvolvedores não devem 
 
 Agora você deve ter uma boa ideia de como uma pipeline de build poderia ser para o seu projeto. Portanto, é hora de mostrar um exemplo prático.
 
-
-
 ## Building a pipeline with GitHub Actions
 
 Mostra passo a apsso de como executar com GitActions
 
 ## Your local pipeline—Git hooks
 
-Nesta seçâo será orientado a usar pre-commit com hoks Eexuctar esas anaiss ao fazer comit, pois, é bom fazermos as verificaçoes de linter, code-style e testse antes de colocar a maquina pra fazer com o docker buidlado, pois ocupa muito tempo**
+Nesta seção será orientado a usar pre-commit com hooks para executar essas análises ao fazer commit, pois, é bom fazermos as verificações de linter, code-style e testes antes de colocar a máquina para fazer com o docker buildado, pois ocupa muito tempo.
 
 Após configurarmos com sucesso uma pipeline de CI/CD simples, mas já muito útil, agora queremos analisar a execução de algumas etapas no ambiente de desenvolvimento local, antes mesmo de enviá-las para o repositório. Isso pode parecer um trabalho duplicado no momento - por que devemos executar as mesmas ferramentas duas vezes?
 
@@ -130,14 +125,13 @@ Para nossas necessidades, o "hook" pre-commit é particularmente útil. Ele ser�
 
 ### Setting up Git Hooks
 
-Eninsa a usar o captainhook (do PHP) Ppara, quando dar o git comit executar esses tetes
+Nesta parte, ensina a usar o captain-hook (do PHP) para, quando dar o git commit executar esses tetes
 
 ````sh
 $ composer require --dev captainhook/captainhook
 ````
 
-CaptainHook provides the useful {$STAGED_FILES} placeholder, which
-contains all staged files. It is very convenient to use, as we can see here:
+CaptainHook provides the useful {$STAGED_FILES} placeholder, which contains all staged files. It is very convenient to use, as we can see here:
 
 ````
 {
@@ -175,7 +169,7 @@ Com o tempo, a equipe trabalhando no projeto ganhará confiança e, com uma cobe
 
 ## An outlook on continuous delivery (CD)
 
-Eventualmente, sua pipeline de CI funcionará tão bem que você poderá confiar plenamente nela. Ela impedirá que código com erros seja enviado para produção de forma confiável, e em algum momento você se encontrará fazendo menos verificações manuais se a implantação ocorreu bem. Nesse ponto, você pode pensar em usar o CD: isso descreve a combinação de ferramentas e processos para implantar código em qualquer ambiente automaticamente.
+Eventualmente, sua pipeline de CI funcionará tão bem que, em caso de sucesso, será um pacote 100% confiável. Esse processo impedirá que código com erros seja enviado para produção de forma confiável, e em algum momento você se encontrará fazendo menos verificações manuais se a implantação ocorreu bem. Nesse ponto, você pode pensar em usar o **CD: isso descreve a combinação de ferramentas e processos para implantar código em qualquer ambiente automaticamente.**
 
 Um fluxo de trabalho comum é que sempre que as alterações são mescladas em um determinado ramo (por exemplo, principal para o ambiente de produção), a pipeline de CI/CD será acionada automaticamente. Se as alterações passarem por todas as verificações e testes, o processo é tão confiável que o código é implantado no destino desejado sem a necessidade de testar manualmente o resultado da construção.
 
@@ -201,26 +195,45 @@ Se você tornou o desenvolvimento de software PHP sua profissão, normalmente tr
 
 Para nós, esse tópico é tão importante que dedicamos os próximos dois capítulos à introdução de técnicas modernas de colaboração que o ajudarão a escrever um ótimo código PHP ao trabalhar em equipes. Esperamos vê-lo no próximo capítulo!
 
+## Meu Resumo
+
+O que é CI:
++  Processo automatizado de reunir todos os componentes necessários de sua aplicação em um pacote entregável para poder ser implantado nos ambientes desejados. Durante o processo, verificações automatizadas garantirão a qualidade geral do código. É importante ter em mente que, se uma das verificações falhar, toda a construção será considerada falha.
++ Exemplo de etapas:
+1.  Usar o PHPlinter para garantir a corretude sintática do código.
+2.  Executar um code style checker para manter a formatação do código alinhada.
+3.  Encontrar possíveis problemas usando análise de código estático.
+4.  Executar todos os conjuntos de testes automatizados para garantir que seu código ainda funcione.
+5.  Criar relatórios para as métricas de qualidade de código usadas.
+6.  Limpar a pasta de compilação e criar um arquivo compactado do código para implantar.
+
+Ferramentas de CI:
++ Existem muitas ferramentas de CI disponíveis, como o Jenkins, que geralmente é auto-hospedado (ou seja, operado por você ou alguém da sua equipe ou empresa). Ou você pode escolher serviços pagos, como GitHub Actions, GitLab CI, Bitbucket Pipelines ou CircleCI.
+
+Neste capítulo ensina fazer CI com GitActions além de falar muita coisa sobre esse processo.
+
+O que é CD:
++ Após passar pelo CI, já sabemos que está tudo correto, então, podemos mandar numa esteira para implantar o pacote
+
 ## Further reading
 
 If you wish to know more, have a look at the following resources:
-•	 Additional information about GitHub Actions:
- 	 The official GitHub Actions documentation with lots of examples: https://docs.
-github.com/en/actions
- 	 setup-php is not only very useful for PHP developers, but also offers a lot of useful
-information—for example, about the matrix setup (how to test code against several PHP
-versions) or caching Composer dependencies to speed up the build: https://github.
-com/marketplace/actions/setup-php-action
-•	 More information about CD and related topics can be found here:
- 	 A good overview of CD: https://www.atlassian.com/continuous-delivery
- 	 Logging and monitoring explained: https://www.vaadata.com/blog/logging-
-monitoring-definitions-and-best-practices/
 
- 	 A great introduction to advanced deployment methods: https://www.techtarget.
-com/searchitoperations/answer/When-to-use-canary-vs-blue-
-green-vs-rolling-deployment
-•	 Tools and links regarding your local pipeline:
- 	 More insights on Git hooks: https://git-scm.com/book/en/v2/Customizing-
-Git-Git-Hooks
- 	 GrumPHP is a local CI pipeline “out of the box”: https://github.com/phpro/
-grumphp
++ Additional information about GitHub Actions:
+  + The official GitHub Actions documentation with lots of examples: 
+    + https://docs.github.com/en/actions
+  + `setup-php` is not only very useful for PHP developers, but also offers a lot of useful
+    information—for example, about the matrix setup (how to test code against several PHP versions) or caching Composer dependencies to speed up the build:
+    + https://github.com/marketplace/actions/setup-php-action
++ More information about CD and related topics can be found here:
+  + A good overview of CD: https://www.atlassian.com/continuous-delivery
+  + Logging and monitoring explained:
+    + https://www.vaadata.com/blog/logging-monitoring-definitions-and-best-practices/
+  + A great introduction to advanced deployment methods:
+    +  https://www.techtarget.com/searchitoperations/answer/When-to-use-canary-vs-blue-green-vs-rolling-deployment
++ Tools and links regarding your local pipeline:
+  + More insights on Git hooks: 
+    + https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks
+    + GrumPHP is a local CI pipeline “out of the box”: https://github.com/phpro/grumphp
+
+

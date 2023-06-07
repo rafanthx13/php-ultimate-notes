@@ -2,72 +2,54 @@
 
 ## Intro
 
-We are convinced that documentation is too important to abandon it. If done right, it will be a valuable
-addition and an important building block for writing clean code, especially when Working in a Team.
+Estamos convencidos de que a documentação é muito importante para ser abandonada. Se feita corretamente, ela será uma adição valiosa e um bloco de construção importante para escrever código limpo, especialmente ao trabalhar em equipe.
 
-We are going to cover the following main topics in this chapter:
-•	 Why documentation matters
-•	 Creating documentation
-•	 Inline documentation
+Vamos abordar os seguintes tópicos principais neste capítulo:
+
++ Why documentation matters
++ Creating documentation
++ Inline documentation
 
 ## Why documentation matters
 
 ### Why documentation is important
 
-We create documentation because we can make it easier for other people to work with our software.
-It is about context, which cannot be easily extracted from reading the code of a couple of classes.
+Criamos documentação porque podemos facilitar o trabalho de outras pessoas com nosso software. Trata-se de contexto, que não pode ser facilmente extraído ao ler o código de algumas classes.
 
-**Documentation is often not only about the what or how, but also about the why.**
+**A documentação muitas vezes não se trata apenas do que ou como, mas também do porquê.**
 
 ### Developer documentation
 
-Vamos ueremos focar na documentação que o auxilia no processo de desenvolvimento e permite que você escreva um código limpo, conforme descrito na seguinte lista não exaustiva:
+Vamos focar na documentação que o auxilia no processo de desenvolvimento e permite que você escreva um código limpo, conforme descrito na seguinte lista não exaustiva:
 
 O que devemos documentar
 
-+ •	 Administration and configuration guides: Besides the obvious need to describe how to install
-and configure the software, make sure to include a section about code quality. This should
-contain information about which tools are used locally, and how they are configured.
++ **Guias de administração e configuração:** Além da necessidade óbvia de descrever como instalar e configurar o software, certifique-se de incluir uma seção sobre qualidade de código. Isso deve conter informações sobre quais ferramentas são usadas localmente e como são configuradas.
++ **Documentação da arquitetura do sistema:** Assim que seu projeto se tornar grande o suficiente para que a configuração básica do servidor (geralmente um servidor web e um banco de dados em uma única máquina física) se torne um gargalo, e você começar a dimensioná-lo, deve pensar em documentar também sua infraestrutura. Eventualmente, isso economizará muito tempo para você e para os outros ao procurar os URLs corretos ou acessos ao servidor, especialmente em situações críticas. Pode ser um bom lugar para adicionar informações sobre o pipeline de integração contínua (CI) também.
 
-•	 System architecture documentation: As soon as your project becomes big enough that the
-basic server setup (usually a web server and database on one physical machine) becomes a
-bottleneck, and you start scaling it, you should think about documenting your infrastructure
-as well. Eventually, this will save you and others a lot of time searching for the correct Uniform
-Resource Locators (URLs) or server accesses, especially in critical situations. It might be a
-good place to add information about the continuous integration (CI) pipeline as well.
++ **Documentação da arquitetura do software:** Como seu software é construído internamente? Ele usa eventos para se comunicar entre os módulos? Existem filas que devem ser usadas? Perguntas como essas devem ser respondidas na documentação da arquitetura do software. Isso facilita para outros desenvolvedores seguir os princípios.
 
-•	 Software architecture documentation: How is your software built internally? Does it use events
-to communicate between the modules? Are there any queues that should be used? Questions
-such as these should be answered in the software architecture documentation. This makes it
-easier for other developers to follow the principles.
++ **Diretrizes de codificação:** Além da documentação da arquitetura do software, as diretrizes de codificação oferecem conselhos sobre como escrever o código. Discutimos esse tópico em profundidade no Capítulo 12, Trabalhando em Equipe.
 
-•	 Coding guidelines: In addition to the software architecture documentation, coding guidelines
-offer advice on how to write the code. We discussed this topic in depth in Chapter 12, Working
-in a Team.
-
-•	 API documentation: If your PHP: Hypertext Preprocessor (PHP) application has an API
-that is used by other developers or even customers, you need to provide a good overview of the
-API functionality. This makes theirs and your life easier, as you will have fewer interruptions
-from people who want to know how the API works. You can also give good examples of how
-to build additional API endpoints.
++ **Documentação da API:** Se sua aplicação PHP tem uma API que é usada por outros desenvolvedores ou até mesmo clientes, você precisa fornecer uma boa visão geral da funcionalidade da API. Isso facilita a vida deles e a sua, pois você terá menos interrupções de pessoas que querem saber como a API funciona. Você também pode fornecer bons exemplos de como criar endpoints adicionais da API.
 
 ## Creating documentation
 
 **Textos**
 
-Para projetos pequenos, É recomendável fazer a documentaçâo como uma subpasta do projeto, colcando a documentaçâo num formato fácil de ser lido, como o Markdown. 
+Para projetos pequenos, É recomendável fazer a documentação como uma subpasta do projeto, colocando a documentação num formato fácil de ser lido, como o Markdown. 
 
 **Diagramas**
 
-+ Uma ferramenta versáil é https://www.diagrams.net
-+ Existe a linguagem UML que define documentaçâo mais específica
-+ Outra ferramenta é o MermaidJS no seuginte link: Mermaid.js (https://mermaid-js.github.io)
++ Uma ferramenta versátil é https://www.diagrams.net
++ Existe a linguagem UML que define documentação mais específica
++ Outra ferramenta é o MermaidJS no seguinte link: Mermaid.js (https://mermaid-js.github.io)
 + PlantUML: https://plantuml.com
 + Diagrams-MinGrammer: https://diagrams.mingrammer.com
 
-**DOcumentando API**
+**Documentando API**
 
-Um formato muito popular é o de OpenAPi pela ferremnta **Swagger** que describe os aspctos das API, seus end-points usando artuivo YAML (Ain't Markup Language) como  trehco a seguir
+Um formato muito popular é o de OpenAPi pela ferramenta **Swagger** que descreve os aspectos das API, seus end-points usando arquivo YAML (Ain't Markup Language) como  trecho a seguir
 
 ````yaml
 openapi: 3.0.0
@@ -91,34 +73,31 @@ paths:
           description: 'Returns the product data'
 ````
 
-Apartir dess epequeno trehco o swagger consegue gera ruma página que descrive o endpoint e a emesmo pode consumí-lo.
+A partir desse pequeno trecho o swagger consegue gerar ruma página que descreve o endpoint e a mesmo pode consumi-lo.
 
-Ao invés de escrver todo o arquivo, você pode usar ferramentas que gerarm o swagger, em  https://github.com/zircote/swagger-php
+Ao invés de escrever todo o arquivo, você pode usar ferramentas que gerar o swagger, em https://github.com/zircote/swagger-php
 
-Ele vai gerar a documentaçao de acrodo com as ANnotation e comentários no método. Infelismente é necessário criar um comentário mutio grande.
+Ele vai gerar a documentação de acordo com as Annotation e comentários no método. Infelizmente é necessário criar um comentário muito grande.
 
-**Swagger UI : Swagger UI**
+**Swagger UI: Swagger UI**
 
-(https://github.com/swagger-api/swagger-ui), which is a visual and interactive
-documentation of your API.
+(https://github.com/swagger-api/swagger-ui), que é uma documentação visual e interativa da sua API.
 
-**OpenAPI alternatives - RAML e API Blueprint**
+**Alternativas OpenAPI - RAML e API Blueprint**
 
-There are other formats such as RESTful API Modeling Language (RAML) (https://
-raml.org) or API Blueprint (https://apiblueprint.org) that you could use, and
-we are not opinionated toward any solution.
+Existem outros formatos, como a Linguagem de Modelagem de API RESTful (RAML) ([https://raml.org](https://raml.org/)) ou API Blueprint ([https://apiblueprint.org](https://apiblueprint.org/)), que você pode usar, e não temos preferência por nenhuma solução em particular.
 
 ## Inline documentation
 
-**DockBLocks**
+**DockBlocks**
 
-Anotações em comentários que usam `@`. Tanto IDES quanto outros progrmaa conseguem ler essa anotações e gerar documntação com informação.
+Anotações em comentários que usam `@`. Tanto IDES quanto outros programa conseguem ler essa anotações e gerar documentação com informação.
 
-Algumas ferramentas de qualdiade de código usam anotações para alterar o seu comportamento.
+Algumas ferramentas de qualidade de código usam anotações para alterar o seu comportamento.
 
 **Useless comments**
 
-vite comentários inúteis como o a seguir:
+Evite comentários inúteis como o a seguir:
 
 ````php
 // write the string to the log file
@@ -128,29 +107,48 @@ Useless comments
 
 **When commenting is useful**
 
-•	 To avoid confusion: If you can anticipate that other developers might wonder why you chose
-that implementation, you should add more context by adding a comment.
-•	 When implementing complex algorithms: Even if we try to avoid it, we sometimes have to
-write code that is hard to understand—for example, if we need to implement a certain algorithm
-or some unknown business logic. In these cases, a brief comment can be a lifesaver.
-•	 For reference purposes: If your code implements some logic that is already explained
-elsewhere—for example, in a wiki or a ticket—you can add a link to the corresponding source
-to make it easier for others to find more information about it. This should only be an exception
-and not the rule.
++ Para evitar confusão: Se você pode antecipar que outros desenvolvedores podem se perguntar por que você escolheu aquela implementação, você deve adicionar mais contexto adicionando um comentário.
++ Ao implementar algoritmos complexos: Mesmo se tentarmos evitá-lo, às vezes temos que escrever código que é difícil de entender, por exemplo, se precisamos implementar um determinado algoritmo ou uma lógica de negócio desconhecida. Nestes casos, um breve comentário pode ser um salva-vidas. 
++ Para fins de referência: Se o seu código implementa alguma lógica que já está explicada em outro lugar, por exemplo, em um wiki ou em um ticket, você pode adicionar um link para a fonte correspondente para facilitar que outros encontrem mais informações sobre isso. Isso deve ser apenas uma exceção e não a regra.
 
 ## Summary
 
-Writing clean code is not only knowing how to do it yourself but also about making sure that other
-developers will follow this path too. To be able to do this, they need to know the rules that apply to
-the project.
+Escrever código limpo não é apenas saber como fazê-lo por conta própria, mas também garantir que outros desenvolvedores sigam esse caminho também. Para poder fazer isso, eles precisam conhecer as regras que se aplicam ao projeto.
 
-In this chapter, we discussed how to create documentation that can help you to achieve this goal. We
-discussed best practices for manually writing documentation, as well as creating informative and at
-the same time maintainable diagrams. Lastly, we introduced ways to generate documentation from
-the code and elaborated on the pros and cons of inline documentation.
+Neste capítulo, discutimos como criar documentação que possa ajudá-lo a alcançar esse objetivo. Discutimos as melhores práticas para escrever documentação manualmente, bem como a criação de diagramas informativos e ao mesmo tempo mantíveis. Por fim, apresentamos maneiras de gerar documentação a partir do código e elaboramos sobre os prós e contras da documentação embutida.
+
+## Meu Resumo
+
+Documentar:
++ Porque fazer: Facilitar o trabalho de quem pegar o código
++ O que documentar:
+  - Configurações
+  - Regras de Negócio
+  - Arquitetura do Sistema
+  - Diretrizes e padrões usados
+  - Documentar API
+
+Formas de documentar 
++ Texto: Via Markdown
++ Diagrama: Há as seguintes opções
+  - Uma ferramenta versátil é https://www.diagrams.net
+  - Existe a linguagem UML que define documentação mais específica
+  - Outra ferramenta é o MermaidJS no seguinte link: Mermaid.js (https://mermaid-js.github.io)
+  - PlantUML: https://plantuml.com
+  - Diagrams-MinGrammer: https://diagrams.mingrammer.com
+
+Quando comentários no código são bons:
++ Quando forem DocBlocks
++ Quando o comentário evita confusão
++ Para descrever algoritmos complexos
++ Para referenciar algum outro link
+
+Documentar API: Através do Swagger
+
++ Alternativas ao Swagger: Existem outros formatos, como a Linguagem de Modelagem de API RESTful (RAML) ([https://raml.org](https://raml.org/)) ou API Blueprint ([https://apiblueprint.org](https://apiblueprint.org/)), que você pode usar, e não temos preferência por nenhuma solução em particular.
 
 ## Further reading
-If you want to learn more about Mermaid.js, we recommend the book The Official Guide to Mermaid.
-js by Knut Sveidqvist and Ashish Jain, published by Packt in 2021.
+
+Se você deseja aprender mais sobre o Mermaid.js, recomendamos o livro "The Official Guide to Mermaid.js" de Knut Sveidqvist e Ashish Jain, publicado pela Packt em 2021.
 
 

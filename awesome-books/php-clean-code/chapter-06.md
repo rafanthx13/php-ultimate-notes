@@ -17,10 +17,10 @@ $foo = match($var) {
 
 ## Named arguments
 
-Ao chamar uma funçâo, voc epode passar os nomes dos arqugmentos, asism, voce pode até mesmo mudar a odem deles
+Ao chamar uma função, você pode passar os nomes dos argumentos, assim, você pode até mesmo mudar a ordem deles
 
 Quando usar:
-+ Se , por exmeplo, o metodo tem 11 arguemtnos, tudo com valor default, e s'queremos alterar o 5 e 11. Aí, named  arguments será o ideal
++ Se, por exemplo, o método tem 11 argumentos, tudo com valor default, e s'queremos alterar o 5 e 11. Aí, "named  arguments" será o ideal
 + Passar nomes para deixar mais claro
 
 ## Read-only classes and properties
@@ -43,7 +43,7 @@ protected readonly string $foo;
 
 ## Protecting your sensitive arguments from leaking
 
-coloando um argumento/atributo entre #[] você impede que ele seja mostrado ao dar um vr_dump ou print_r
+Colocando um argumento/atributo entre #[] você impede que ele seja mostrado ao dar um vr_dump ou print_r
 
 ````php
 <?php
@@ -62,4 +62,8 @@ class SecurityController
 
 ## Summary 
 
-O PHP tem evoluido bastante não pode mais ser considerdo uma linguagem morta, só as suas versões anteiores
+O PHP tem evoluído bastante não pode mais ser considerado uma linguagem morta, só as suas versões anteriores
+
+## Meu Resumo
+
+Fala de algumas novas features do PHP8. Não é interressante

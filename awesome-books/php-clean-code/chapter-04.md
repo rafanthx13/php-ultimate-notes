@@ -4,13 +4,15 @@
 
 ## PHP as an ecosystem
 
+**O pdoer do PHP**
+
 Isso pode ser percebido em vários itens que podemos listar juntos, como segue: 
 
 + O PHP é, ainda no início da década de 2020, a linguagem server-side mais utilizada para o desenvolvimento de aplicações web.   Quando você conhece o lugar predominante (para não dizer esmagador) dos aplicativos da Web em nosso   uso diário, este é um prêmio genuinamente bom! 
 
 + A linguagem continua evoluindo muito fortemente, principalmente nos últimos anos. Passou por um   queda durante o desenvolvimento do PHP 6 (que nunca foi lançado) antes de experimentar uma verdadeira   explosão de sua popularidade começando com a versão 7. A versão 7 definiu a base do futuro   de PHP com recursos altamente exigidos, como digitação forte, além de desempenho incrível   e melhoria da velocidade. Benchmarks comparando PHP 5 e 7 eram simplesmente loucos quando   saiu. Os desenvolvimentos continuam fortes, com novos recursos sendo propostos com muita regularidade. 
 
-+ PHP tem um gerenciador de dependências excepcional chamado Composer. Simples, de código aberto e   incrivelmente eficiente, muitas vezes é reconhecido por seus usuários como o melhor gerenciador de dependências do   mercado, todas as linguagens de programação incluídas. Embora esta possa ser uma opinião subjetiva, nós   não pode tirar sua confiabilidade. 
++ **PHP tem um gerenciador de dependências excepcional chamado Composer**. Simples, de código aberto e   incrivelmente eficiente, muitas vezes é reconhecido por seus usuários como o melhor gerenciador de dependências do   mercado, todas as linguagens de programação incluídas. Embora esta possa ser uma opinião subjetiva, nós   não pode tirar sua confiabilidade. 
 
 + Falando em dependências, basta visitar o site Packagist (o repositório onde   Composer leva dependências) para perceber a comunidade excepcional que o PHP tem em seu   disposição para disponibilizar tantas bibliotecas, cada uma mais incrível que a outra, com   sendo a grande maioria gratuita e sem restrições de uso. Se você tem uma necessidade, há   é uma biblioteca externa disponível que certamente resolverá seu problema. 
 
@@ -40,7 +42,7 @@ Versionamento é simplesmente colocar um número em uma versão do código fonte
 
 Podemos ver as vantagens do versionamento semântico: serenidade, lógica e consistência. Obviamente, existem outras variações, como Alpha, Beta, Release Candidate e Golden Master. Mas estes são mais raros.
 
-```
+```json
 {
     "require": {
         "php": ">=7.3",
@@ -70,3 +72,7 @@ linguagem. Você tem um problema; existe uma solução. Temos a sorte de que a m
 Fazer uma escolha entre essas bibliotecas pode ser difícil e desafiador. É importante, mesmo obrigatório, fazer um trabalho de pesquisa real de antemão para ter certeza de fazer a escolha certa. Nós não somos imune a obstáculos e incidentes, mas este capítulo forneceu ferramentas e ferramentas prontas para uso soluções para limitar os riscos. Acima de tudo, não se precipite nas tecnologias mais modernas. Se você quiser para atrair usuários e fazer com que eles continuem usando seu aplicativo mais do que outro, as palavras-chave são “robustez” e “estabilidade”!
 
 Já falamos muito sobre o trabalho de outras pessoas, mas não devemos esquecer nossas próprias conquistas. Como você consegue desenvolver bons hábitos para encontrar seu caminho em seu código enquanto consegue encontrar seu facilmente no código fonte de suas bibliotecas externas favoritas quando você precisa entender seu funcionamento interno? Voltamos ao que dissemos nos primeiros capítulos: tendo os mesmos hábitos, nos entendemos com mais facilidade. Isso obviamente se aplica à organização de um projeto, no nomeação de arquivos, a estrutura de pastas e assim por diante. E é exatamente isso que veremos na prática em o próximo capítulo.
+
+## Meu Resumo
+
+Fala sobre o poder do PHP e sobre seu ecossistema. Chato.

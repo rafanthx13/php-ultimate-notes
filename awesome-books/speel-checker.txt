@@ -1,0 +1,13 @@
+pir = pior
+rprojtos = projetos
+alguem = alguém
+entendelo = entendê-lo
+nâo = não
+codigo = código
+prinicpios = princípios
+presisam = precisam
+apra = para
+concertar = consertar
+çao = ção
+Nâo = Não
+trehco = trecho
