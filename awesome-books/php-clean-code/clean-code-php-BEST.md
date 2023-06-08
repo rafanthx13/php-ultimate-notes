@@ -46,6 +46,110 @@ O principal desse capítulo é: Fala sobre padronizar como nomear  as coisas em 
 
 Fala de algumas novas features do PHP8. Não é interressante
 
+## 07 - Code Quality Tools
+
+Checar sintaxe e code-style
+
+PHP Linter: Checa sintaxe:
++ Tem nativo no próprio php : `$ php -lf src/*`
+
+PHP CS Fixer: verifica code style
++ Corrigi indentaçâo, espaços em branco inúteis; padronização do PSR-12
+
+O que é arquio phar: phar (self-containing PHP archive (phar) 
+
+Ferramentas de análise estática do código
+
++ phpcpd – the copy and paste detector
+  - Detecta se um trecho de código em um lugar foi repetido em outro, assim,
+  - Em resumo, o PHPCPD é uma ferramenta útil para identificar e corrigir duplicações de código em projetos PHP, contribuindo para um código mais limpo, organizado e de fácil manutenção.
+
++ PHPMD - the PHP mess detector
+  - O PHPMD é uma ferramenta que detecta problemas potenciais no código, conhecidos como "code smells", que podem causar bugs, comportamento inesperado e dificuldade na manutenção. 
+  - Ele aplica regras específicas para evitar problemas relacionados ao estilo de código. 
+  - O PHPMD é a ferramenta default do PHP para isso, sendo muitíssimo útil na identificação e correção de problemas no código.
+
++ PHPStan - PHPStan – a static analyzer for PHP
+  - O PHPStan é uma ferramenta amplamente utilizada na comunidade PHP, especialmente em projetos maiores e mais complexos, onde é fundamental garantir a qualidade do código. Ao utilizar o PHPStan, os desenvolvedores podem detectar e corrigir erros mais cedo no processo de desenvolvimento, economizando tempo e reduzindo a ocorrência de erros em produção.
+
++ Psalm - A PHP static analysis linting machine
+  - O Psalm é uma ferramenta de análise estática de código para projetos escritos em PHP. Ele é usado para ajudar os desenvolvedores a encontrar erros e problemas potenciais em seu código antes mesmo de executá-lo.
+
+Comparando Psalm e PHPStan
++ - O Psalm foi projetado com uma abordagem mais conservadora em relação ao PHP, priorizando a segurança e a precisão das verificações de tipo. Ele é conhecido por ser mais rigoroso na detecção de erros de tipo e na inferência de tipos.
+- O PHPStan, por outro lado, adota uma abordagem mais permissiva. Ele tenta inferir tipos da melhor maneira possível, mas também permite uma certa flexibilidade no tratamento de erros de tipo.
+
+Recomendação final: PHP linter, CodeStyle e as 3 ferramentas de analysis static (phpcpd, phpmd e phpsan).
+
+**Futher Readings**
+
+Se você deseja experimentar ainda mais ferramentas de qualidade de código, considere os seguintes projetos:
+
+- Exakat (https://www.exakat.io) - Uma ferramenta que também abrange problemas de segurança e desempenho, por exemplo. Ela também pode corrigir problemas automaticamente.
+
+- Phan (https://github.com/phan/phan) - Um analisador de código estático que você pode experimentar imediatamente no seu navegador.
+
+- PHP Insights (https://phpinsights.com/) - Outro analisador, porém com métricas fáceis de usar em termos de código, arquitetura, complexidade e estilo.
+
+## 08 - Code Quality Metrics
+
++ FURPS (Fncionality, suability, Reliability, Perfomance, Supportability)
+
+Métricas de Código
+
++ Line of Code (LOC)
+  - Contar quantas linhas tem o código. Não é exatamente uma métrica de qualidade
+
++ Complexidade ciclomática (CC)
+  - Possíveis caminhos para a execução de um trecho
+  - Conta os caminhos por f, while, for e case
+    
++ NPath complexity
+  -  Diferentemente da complexidade ciclomática, que mede o número de caminhos independentes, a complexidade NPath foca na contagem do número total de caminhos possíveis em um programa.
+
++ Halstead Metrics
+  - As métricas de Halstead são um conjunto de métricas de software propostas por Maurice H. Halstead em 1977. Essas métricas visam quantificar diferentes aspectos do software com base nas características do código-fonte.
+ - É originária de uma fórmula
+ 
++ The maintainability index
+  - Dá uma nota de 0 a 100
+  - O índice de manutenibilidade geralmente é calculado usando uma fórmula padronizada que considera diferentes características do código. Embora as fórmulas possam variar ligeiramente dependendo da ferramenta ou método específico utilizado, geralmente levam em consideração fatores como o tamanho do código, a complexidade ciclomática, a profundidade de aninhamento, a coesão e o acoplamento.
+
+Ferramentas para buscar essas metricas:
+
+phploc
+ - Calcula a quantidade de linha dos arquivos; linhas de comentários e complexidade ciclomática
+
+phpdepend
+  - Pega muito mais métricas, mas é um pouco menos amigável para utilizar
+  - Analisa dependência entre classes e pacotes
+
+phpmetrics
+  - Gera um relatório com as métricas
+
+Pros e Contras de utilizar e focar nessas métrica:
+
++ PROS: 
+
+1. Fornecem uma visão geral do estado atual do projeto.
+2. Auxiliam na identificação de áreas que precisam ser melhoradas.
+3. Facilitam o treinamento e prática de refatoração de código.
+4. Proporcionam uma sensação de conquista quando métricas positivas são alcançadas.
+5. Ajudam a evitar a escrita de código ruim desde o início.
+
++ CONTRAS:
+
+1. Alguns desenvolvedores podem refatorar mais código do que o necessário, apenas para obter melhores métricas.
+2. É necessário encontrar um equilíbrio entre a velocidade de desenvolvimento e a qualidade do código, considerando prazo e recursos disponíveis.
+3. Não devem ser usadas como ferramenta de competição ou para criticar colegas de trabalho.
+4. É importante ter consciência de que as métricas são baseadas em critérios técnicos e não refletem necessariamente o esforço e a intenção dos desenvolvedores.
+5. Devem ser usadas como uma ferramenta complementar, não como a única medida da qualidade do código.
+
+**Further reading**
+
++ dePHPend (https://dephpend.com/) is a tool that can draw UML diagrams for your PHP code and be used to spot problems in your architecture
+
+
 ## 09 - Organizing PHP Quality Tools
 
 Esse cap apresenta outras formas de usar as ferramentas de qualidades: arquivos phar e phive.

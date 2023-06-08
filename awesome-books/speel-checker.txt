@@ -11,3 +11,6 @@ concertar = consertar
 çao = ção
 Nâo = Não
 trehco = trecho
+VOcê = Você
+violaçôes = violações
+âo = ão
