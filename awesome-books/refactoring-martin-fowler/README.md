@@ -1,5 +1,8 @@
 # Refatorando - Martin Fowler
 
+Refatoração: Aperfeiçoando o design de códigos existentes
+Segunda Edição, Martin Fowler com contribuições de Kent Beck
+
 Livro em PT-BR
 
 460páginas
