@@ -1,10 +1,4 @@
-# Listagem
-
-|      |      |      |
-| ---- | ---- | ---- |
-|      |      |      |
-|      |      |      |
-|      |      |      |
+# Listagem dos Métodos de Refatoraçâo que iremos ver no livro
 
 | Refactoring                                           | . | . | . |
 |-------------------------------------------------------|---|---|---|
