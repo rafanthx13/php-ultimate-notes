@@ -507,3 +507,524 @@ Ao seguir esses passos, movemos a lógica de embelezamento para um decorator sep
 Envolve árvore o qu quqsse nunca se usa
 
 ## Replace Conditional Dispatcher with Command
+
+### O que é
+
+**SE**
+
+Conditional logic is used to dispatch requests and execute actions.
+
+**Refatore usando padrões para**
+
+Create a Command for each action. Store the Commands in a collection and replace the conditional logic with code to fetch and execute Commands.
+
+### Simplificando em uma imagem
+
+07-06-command-dispatcher-02.png
+
+### Schema
+
+07-06-command-dispatcher-01.jpg
+
+### Motivação
+
+Muitos sistemas recebem, roteiam e lidam com solicitações. A
+despachante (*dispatcher*) condicional é uma declaração condicional (como um `switch`)
+que executa o roteamento e a manipulação de solicitações. Alguns
+despachantes condicionais são adequados para seus trabalhos; outros
+não.
+
+Despachantes condicionais que são adequados tendem a
+rotear um pequeno número de solicitações para pequenos blocos de lógica do
+manipulador. Esses despachantes geralmente podem ser visualizados em um
+monitor sem a necessidade de rolar para ver todo o código. O padrão Command
+geralmente não fornece um substituto útil para esses tipos de despachantes
+condicionais (ou seja, quando os blocos dos `ifs` são pequenos).
+
+Por outro lado, se o seu despachante condicional for pequeno, ainda pode
+não ser uma boa opção para o seu sistema (Você pode usar outras estratégias para refatorar, como usar um dicionário para mapear a chave. 
+
+Os dois motivos mais comuns
+para refatorar de um dispatcher condicional para uma solução baseada em
+COMMAND são os seguintes.
+
+1. **Quando Não há flexibilidade em tempo de execução:** os clientes que
+dependem do despachante condicional desenvolvem a necessidade de
+configurá-lo dinamicamente com novas solicitações ou lógica do manipulador.
+No entanto, o despachante condicional não permite tais configurações
+dinâmicas porque toda a sua lógica de roteamento e manipulação é
+codificada em uma única instrução condicional.
+2. **Um corpo grande de código:** alguns despachantes condicionais tornam-se
+enormes e difíceis de manejar à medida que evoluem para lidar com novas
+solicitações ou à medida que a lógica do manipulador se torna cada vez
+mais complexa com novas responsabilidades. Extrair a lógica do
+manipulador em métodos diferentes não ajuda o suficiente porque a
+classe que contém o despachante e os métodos de manipulador extraídos
+ainda é muito grande para trabalhar.
+
+O padrão Command fornece uma excelente solução para esses problemas.
+Para implementá-lo, basta colocar cada parte da lógica de manipulação de
+solicitação em uma classe de "comando" separada que possui um método
+comum, como `execute()` ou `run()`, por executar seu
+lógica do manipulador encapsulado. Depois de ter uma família desses
+comandos, você pode usar uma coleção para armazenar e recuperar
+instâncias deles; adicionar, remover ou alterar instâncias; e executar
+instâncias invocando seus métodos de execução.
+
+Roetar solicitações e executar diversos comportamentos de maneira
+uniforme pode ser tão central para um projeto que você pode acabar
+usando o padrão Command no início, em vez de refatorá-lo
+posteriormente. Muitos dos sistemas baseados na Web do lado do
+servidor que construí usaram o padrão Command para produzir uma
+maneira padrão de rotear solicitações, executar ações ou encaminhar
+ações para outras ações. A seção Exemplo mostra como refatorar para tal
+solução.
+
+Os autores de Padrões de design [DP  explicam como o padrão Command é
+freqüentemente usado para suportar uma capacidade de desfazer/refazer.
+Uma questão que frequentemente surge nos círculos de programação
+extrema (XP) é o que fazer quando você não tem certeza se um sistema
+precisará ser desfeito/refeito. Você apenas implementa o padrão Command
+caso seja necessário? Ou isso é uma violação de "Você não vai precisar disso - You aren't gonna need it - YAGNI",
+um princípio do XP que adverte contra a adição de funcionalidade ao código
+com base na especulação, não na necessidade genuína. Se não tenho certeza
+se um sistema precisa do padrão Command, geralmente não o implemento,
+pois acho que não é tão difícil refatorar para esse padrão quando surge a
+necessidade. No entanto, se o seu código estiver entrando em um estado em
+que será cada vez mais difícil refatorar para o padrão Commandehá uma boa
+chance de você precisar em breve de um recurso de desfazer/refazer, pode
+fazer sentido refatorá-lo para usar o comando antes que isso seja
+incrivelmente difícil. É um pouco como fazer um plano de seguro.
+
+O padrão Command é fácil de implementar, versátil e incrivelmente
+útil. Essa refatoração captura apenas uma área em que é útil. Como
+o Command pode resolver outros problemas complicados, pode
+haver facilmente refatorações adicionais para ele.
+
+### Prós e Contras
+
+**Prós**
+
++ Fornece um mecanismo simples para executar diversos
+  comportamentos de maneira uniforme.
+
++ Permite alterações de tempo de execução em relação a quais solicitações
+são tratadas e como.
++ Requer código trivial para implementar.
+
+**Contras**
+
++ Complica um projeto quando um despachante condicional é
+  suficiente.
+
+### Mecânica da Refatoração
+
+1 - Em uma classe que contém um despachante condicional, encontre o código que manipula uma solicitação e aplique Extrair Método[F] nesse código até que você tenha um método de execução, um método que invoca o comportamento do código.
+
+Compilar e testar.
+
+2 - Repita a etapa 1 para extrair todas as partes restantes do código de manipulação de solicitação em métodos de execução.
+
+3 - Aplicar Extrair classe[F] em cada método de execução para produzir um Command concreto, uma classe que
+manipula uma solicitação. Esta etapa geralmente implica tornar público o método de execução do comando
+concreto. Se o método de execução no novo comando concreto for muito grande ou não for rapidamente
+compreensível, aplique Método de composição (123).
+
+Compilar e testar.
+
+Depois de terminar de criar todos os seus comandos concretos, procure por códigos duplicados neles. Se você encontrar algum, veja se pode removê-lo aplicando Método de modelo de formulário (205).
+
+4 - Definir um comando, uma interface ou classe abstrata que declara um método de execução que é o mesmo para cada comando concreto. Para implementar esta etapa, você precisará analisar seus comandos concretos para saber o que há de único ou semelhante neles. Encontre respostas para as seguintes perguntas.
+
++ Quais parâmetros devem ser passados para um método de execução comum?
++ Que parâmetro(s) poderia(m) ser passado(s) durante a construção de um comando concreto?
++ Que informações um comando concreto poderia obter chamando de volta um parâmetro, em vez de ter dados passados diretamente para o comando concreto?
++ Qual é a assinatura mais simples para um método de execução que é o mesmo para cada
+  comando concreto?
+
+Considere produzir uma versão inicial do seu comando aplicando Extrair superclasse[F] ou
+Extrair interface[F] em um comando concreto.
+
+Compilar.
+
+5 - Faça com que cada comando concreto implemente ou estenda seu comando e atualize todo o código do
+cliente para funcionar com cada comando concreto por meio do tipo de comando.
+
+Compilar e testar.
+
+6 - Na classe que contém o dispatcher condicional, defina e preencha ummapa de comando, um mapa que
+contém instâncias de cada comando concreto, marcado por um identificador exclusivo (por exemplo, um nome
+de comando) que pode ser usado em tempo de execução para buscar um comando.
+
+Se você tiver muitos comandos concretos, terá muito código que adiciona instâncias de comando
+concretas ao seu mapa de comandos. Nesse caso, considere fazer seus comandos concretos
+implementarem o padrão Plugin, de Padrões de Arquitetura de Aplicativo Corporativo [Fowler, PEAA
+]. Isso permitirá que eles sejam carregados simplesmente fornecendo os dados de configuração
+apropriados (como uma lista dos nomes das classes de comando ou, melhor ainda, um diretório
+onde as classes residem).
+
+Compilar.
+
+7 - Na classe que contém o dispatcher condicional, substitua o código condicional para
+despachar solicitações pelo código para buscar o comando concreto correto e execute-o
+chamando seu método de execução. Esta classe agora é um Invoker [DP , 236].
+
+Compilar e testar.
+
+### Exemplo
+
+O código de exemplo que veremos vem de um sistema que eu coescrevi para criar e organizar os catálogos
+baseados em HTML da Industrial Logic. Ironicamente, esse sistema fez uso intenso do padrão Command
+desde suas primeiras evoluções. Resolvi reescrever as seções do sistema que usavam o padrão Command
+paranãousar o padrão Command para produzir o tipo de código inchado e sedento de comandos que
+encontro com tanta frequência no campo.
+
+
+
+No código alterado, uma classe chamadaCatalogAppé responsável por despachar e executar ações
+e retornar respostas. Ele executa este trabalho dentro de uma grande declaração condicional:
+
+```java
+public class CatalogApp {
+    private HandlerResponse executeActionAndGetResponse(String actionName, Map parameters) {
+        
+        // 1° IF
+        if (actionName.equals(NEW_WORKSHOP)) { 
+            String nextWorkshopID = workshopManager.getNextWorkshopID(); 
+            StringBuffer newWorkshopContents = workshopManager.createNewFileFromTemplate(nextWorkshopID, workshopManager.getWorkshopDir(), workshopManager.getWorkshopTemplate());
+            workshopManager.addWorkshop(newWorkshopContents);
+            parameters.put("id",nextWorkshopID); 
+            executeActionAndGetResponse(ALL_WORKSHOPS, parameters); 
+            
+        // 2° IF
+        } else if (actionName.equals(ALL_WORKSHOPS)) { 
+            XMLBuilder allWorkshopsXml = new XMLBuilder("workshops"); 
+            WorkshopRepository repository = workshopManager.getWorkshopRepository(); 
+            Iterator ids = repository.keyIterator(); 
+            while (ids.hasNext()) { 
+                String id = (String)ids.next(); 
+                Workshop workshop = repository.getWorkshop(id); allWorkshopsXml.addBelowParent("workshop");
+                allWorkshopsXml.addAttribute("id", workshop.getID()); 
+                allWorkshopsXml.addAttribute("name", workshop.getName()); allWorkshopsXml.addAttribute("status", workshop.getStatus()); 
+                allWorkshopsXml.addAttribute("duration", workshop.getDurationAsString()); 
+            } 
+            String formattedXml = getFormattedData(allWorkshopsXml.toString()); 
+            return new HandlerResponse(new StringBuffer(formattedXml), ALL_WORKSHOPS_STYLESHEET); 
+        }
+        
+        // ...many more "else if" statements
+    }
+}
+```
+
+
+
+A condicional completa se estende por várias páginas - vou poupar você dos detalhes. A primeira etapa
+da condicional lida com a criação de uma nova oficina. A segunda etapa, que por acaso seráchamado pela primeira perna, retorna o XML que contém informações resumidas de todos os workshops da
+Lógica Industrial. Mostrarei como refatorar esse código para usar o padrão Command.
+
+
+
+1 - Começo trabalhando na primeira etapa da condicional. eu aplicoExtrair Método[F ] para
+produzir o método de execução de `getNewWorkshopResponse()`:
+
+
+
+```java
+public class CatalogApp {
+    // ...
+    private HandlerResponse executeActionAndGetResponse(String actionName, Map parameters) {
+        
+        // ...
+        
+        if (actionName.equals(NEW_WORKSHOP)) {
+            // <Extract Method>
+            getNewWorkshopResponse(parameters); 
+            // </Extract Method>
+            
+        } else if (actionName.equals(ALL_WORKSHOPS)) { 
+            // ... 
+        } // ...many more "else if" statements 
+        
+    }
+    
+    // Bloco de instruçâo extraido para um método (Semelhante a Compose Method)
+    private HandlerResponse getNewWorkshopResponse(Map parameters) throws Exception { 
+        String nextWorkshopID = workshopManager.getNextWorkshopID(); 
+        StringBuffer newWorkshopContents = workshopManager.createNewFileFromTemplate(nextWorkshopID, workshopManager.getWorkshopDir(), workshopManager.getWorkshopTemplate()); 
+        workshopManager.addWorkshop(newWorkshopContents); 
+        parameters.put("id",nextWorkshopID); 
+        return executeActionAndGetResponse(ALL_WORKSHOPS, parameters); 
+    }
+}
+```
+
+2 - Agora vou extrair o próximo pedaço de código de tratamento de solicitação, que lida com a listagem de todos os workshops no catálogo:
+
+```java
+public class CatalogApp {
+    private HandlerResponse executeActionAndGetResponse(String actionName, Map parameters) {
+        if (actionName.equals(NEW_WORKSHOP)) { 
+            getNewWorkshopResponse(parameters); 
+        } else if (actionName.equals(ALL_WORKSHOPS)) { 
+        	// <Extract Method>
+            getAllWorkshopsResponse();
+            // </Extract Method>
+            
+        } // ...many more "else if" statements
+    }
+
+    public HandlerResponse getAllWorkshopsResponse() { 
+        XMLBuilder allWorkshopsXml = new XMLBuilder("workshops"); 
+        WorkshopRepository repository = workshopManager.getWorkshopRepository(); 
+        Iterator ids = repository.keyIterator(); 
+        while (ids.hasNext()) { 
+            String id = (String)ids.next(); 
+            Workshop workshop = repository.getWorkshop(id);
+            allWorkshopsXml.addBelowParent("workshop"); 
+            allWorkshopsXml.addAttribute("id", workshop.getID()); 
+            allWorkshopsXml.addAttribute("name", workshop.getName()); 
+            allWorkshopsXml.addAttribute("status", workshop.getStatus()); 
+            allWorkshopsXml.addAttribute("duraction", workshop.getDurationAsString()); 
+        }
+        String formattedXml = getFormattedData(allWorkshopsXml.toString()); 
+        return new HandlerResponse(new StringBuffer(formattedXml), ALL_WORKSHOPS_STYLESH EET); 
+    }
+    
+}
+```
+
+3 - Agora começo a criar comandos concretos. Eu primeiro produzo o
+`NewWorkshopHandler` comando concreto aplicando Extrair classe[F] no método de
+execução `getNewWorkshopResponse()`:
+
+```java
+public class NewWorkshopHandler { 
+    private CatalogApp catalogApp; 
+
+    public NewWorkshopHandler(CatalogApp catalogApp) { 
+        this.catalogApp = catalogApp; 
+    } 
+
+    public HandlerResponse getNewWorkshopResponse(Map parameters) throws Exception { 
+        String nextWorkshopID = workshopManager().getNextWorkshopID(); 
+        StringBuffer newWorkshopContents = WorkshopManager().createNewFileFromTemplate(nextWorkshopID, workshopManager().getWorkshopDir(), workshopManager().getWorkshopTemplate()); 
+        workshopManager().addWorkshop(newWorkshopContents); 
+        parameters.put("id", nextWorkshopID); 
+        catalogApp.executeActionAndGetResponse(ALL_WORKSHOPS, parameters); 
+    } 
+
+    private WorkshopManager workshopManager() { 
+        return catalogApp.getWorkshopManager(); 
+    } 
+}
+```
+
+`CatalogApp` instancia e chama uma instância de `NewWorkshopHandler` igual a:
+
+```java
+public class CatalogApp {
+    public HandlerResponse executeActionAndGetResponse(String actionName, Map parameters) throws Exception { 
+        if (actionName.equals(NEW_WORKSHOP)) { 
+            // Usamos a classe que acabamos de ciar que substitui o bloco de instrução
+            return new NewWorkshopHandler(this).getNewWorkshopResponse(parameters); 
+            //
+        } else if (actionName.equals(ALL_WORKSHOPS)) { 
+            // ... 
+        } // ...
+    }
+}
+```
+
+O compilador e os testes confirmam que essas alterações funcionam bem. Observe
+que eu fiz `executeActionAndGetResponse`(...) público porque é chamado de
+`NewWorkshopHandler`.
+
+Antes de continuar, eu me inscrevoMétodo de composição (123)sobreNewWorkshopHandlermétodo de execução de:
+
+```java
+public class NewWorkshopHandler {
+    
+    public HandlerResponse getNewWorkshopResponse(Map parameters) throws Exception {
+        createNewWorkshop(parameters); 
+        return catalogApp.executeActionAndGetResponse(CatalogApp.ALL_WORKSHOPS, parameters); 
+    }
+
+    private void createNewWorkshop(Map parameters) throws Exception { 
+        String nextWorkshopID = workshopManager().getNextWorkshopID(); 
+        workshopManager().addWorkshop(newWorkshopContents(nextWorkshopID)); 
+        parameters.put("id",nextWorkshopID); 
+    } 
+
+    private StringBuffer newWorkshopContents(String nextWorkshopID) throws Exception { 
+        StringBuffer newWorkshopContents = workshopManager().createNewFileFro mTemplate(nextWorkshopID, workshopManager().getWorkshopDir(), workshopManager().getWorkshopTemplate()); 
+        return newWorkshopContents; 
+    }
+    
+}
+```
+
+
+
+Repito esta etapa para métodos de execução adicionais que devem ser extraídos em seus próprios
+comandos concretos e transformados em Métodos Compostos.AllWorkshopsHandleré o
+próximo comando concreto que extraio. Veja como fica:
+
+```java
+public class AllWorkshopsHandler {
+    
+    private CatalogApp catalogApp; 
+    private static String ALL_WORKSHOPS_STYLESHEET="allWorkshops.xsl"; 
+    private PrettyPrinter prettyPrinter = new PrettyPrinter(); 
+    
+    public AllWorkshopsHandler(CatalogApp catalogApp) { 
+        this.catalogApp = catalogApp; 
+    } 
+    
+    public HandlerResponse getAllWorkshopsResponse() throws Exception { 
+        return new HandlerResponse( new StringBuffer(prettyPrint(allWorkshopsData())), ALL_WORKSHOPS_STYLESHEET ); 
+    } 
+    
+    private String allWorkshopsData() {
+      // ...
+    }
+    
+    private String prettyPrint(String buffer) { 
+        return prettyPrinter.format(buffer); 
+    }
+}
+```
+
+Depois de executar esta etapa para cada comando concreto, procuro código duplicado em todos os
+comandos concretos. Não encontro muita duplicação, então não há necessidade de aplicar Método de
+modelo de formulário (205).
+
+4 -Agora devo criar um comando (conforme definido na seção Mecânica, uma interface ou classe
+abstrata que declara um método de execução que todo comando concreto deve implementar). No
+momento, cada comando concreto tem um método de execução com um nome diferente, e os
+métodos de execução recebem um número diferente de argumentos (ou seja, um ou nenhum):
+
+```java
+if (actionName.equals(NEW_WORKSHOP)) { 
+    return new NewWorkshopHandler(this).getNewWorkshopResponse(parameters); 
+} else if (actionName.equals(ALL_WORKSHOPS)) { 
+    return new AllWorkshopsHandler(this).getAllWorkshopsResponse(); 
+} //...
+```
+
+Fazer um comando envolverá decidir sobre:
+
++ Um nome de método de execução comum
++ Quais informações passar e obter de cada manipulador
+
+O nome do método de execução comum que escolho éexecutar(um nome que é
+freqüentemente usado ao implementar o padrão Command, mas não é o único nome a ser
+usado). Agora devo decidir quais informações precisam ser passadas e/ou obtidas de uma
+chamada para executar(). Examino os comandos concretos que criei e aprendo que muitos
+deles:
+
++ Exigir informações contidas em umMapachamadoparâmetros
++ Retorna um objeto do tipoHandlerResponse
++ Jogue umExceção
+
+Isso significa que meu comando deve incluir um método de execução com a seguinte
+assinatura:
+
+```java
+public HandlerResponse execute(Map parameters) throws Exception
+```
+
+Eu crio o comando executando duas refatorações em `NewWorkshopHandler`. Primeiro, eu
+renomeio seu `getNewWorkshopResponse`(...)método para `execute`(...):
+
+```java
+public class NewWorkshopHandler...
+	public HandlerResponse
+execute(Map parameters) throws Exception
+```
+
+Em seguida, aplico a refatoraçãoExtrair superclasse[F ] para produzir uma classe abstrata chamada
+Manipulador:
+
+```java
+public abstract class Handler { 
+    protected CatalogApp catalogApp; 
+    public Handler(CatalogApp catalogApp) { 
+        this.catalogApp = catalogApp;
+    } 
+
+    public abstract HandlerResponse execute(Map parameters) throws Exception; 
+} 
+
+public class NewWorkshopHandler extends Handler {
+    public NewWorkshopHandler(CatalogApp catalogApp) { 
+        super(catalogApp); 
+    }
+}
+```
+
+O compilador está satisfeito com a nova classe, então sigo em frente.
+
+5 - Agora que tenho o comando (expresso como uma classe abstrata `Handler`), farei com que cada manipulador o
+implemente. Eu faço isso fazendo com que todos se estendam `Hadnler`e implemente o método `execute`.
+Quando terminar, os manipuladores agora podem ser invocados de forma idêntica:
+
+```java
+if (actionName.equals(NEW_WORKSHOP)) { 
+    return new NewWorkshopHandler(this).execute(parameters);
+} else if (actionName.equals(ALL_WORKSHOPS)) { 
+    return new AllWorkshopsHandler(this).execute(parameters); 
+}
+```
+
+Eu compilo e executo os testes para descobrir se tudo está funcionando.
+
+6 - Agora vem a parte divertida. `CatalogApp` declaração condicional de está meramente agindo como um Mapemaneto bruto (mapeia `string` para `create new ...`).
+Seria melhor transformá-lo em um mapa real armazenando uma instância do meu comando em um mapa de
+comando. Para fazer isso, defino e preenchomanipuladores, aMapadigitado pelo nome do manipulador:
+
+**Esse ponto é importante para RETIRAR TOTALMENTE ESSES IFS**
+
+```java
+public class CatalogApp {
+    private Map handlers; 
+    
+    public CatalogApp(...) { 
+        // ... 
+        createHandlers(); 
+        // ... 
+    }
+
+    public void createHandlers() { 
+        // DICIONÁRIO EM JAVA
+        handlers = new HashMap(); 
+        handlers.put(NEW_WORKSHOP, new NewWorkshopHandler(this)); 
+        handlers.put(ALL_WORKSHOPS, new AllWorkshopsHandler(this)); 
+        // ... 
+    }
+}
+```
+
+Como não tenho muitos manipuladores, não recorro à implementação de um Plugin,
+conforme descrito na seção Mecânica. O compilador está satisfeito com o novo código.
+
+7 - Por fim, substituo o grande instrução condicional de `CatalogApp` com código que procura um `handler` pelo nome e o executa:
+
+```java
+public class CatalogApp {
+    
+    public HandlerResponse executeActionAndGetResponse(String handlerName, Map parameters) throws Exception { 
+        Handler handler = lookupHandlerBy(handlerName); 
+        return handler.execute(parameters); 
+    }
+
+    private Handler lookupHandlerBy(String handlerName) { 
+        return (Handler)handlers.get(handlerName); 
+    }
+}
+```
+
+O compilador e o código de teste estão satisfeitos com esta solução baseada em comando.CatalogApp
+agora usa o padrão Command para executar uma ação e obter uma resposta. Esse design torna fácil
+declarar um novo manipulador, nomeá-lo e registrá-lo no mapa de comandos para que possa ser
+chamado no tempo de execução para executar uma ação.

@@ -1,0 +1,16 @@
+### O que é
+
+### Simplificando em uma imagem
+
+### Schema
+
+### Motivação
+
+### Prós e Contras
+
+### Mecânica da Refatoração
+
+### Exemplo
+
+130-247
+378-517
