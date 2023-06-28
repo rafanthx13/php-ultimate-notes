@@ -502,6 +502,431 @@ Ao seguir esses passos, movemos a lógica de embelezamento para um decorator sep
 
 ## Replace State-Altering Conditionals with State
 
+### O que é
+
+**Se**
+
+The conditional expressions that control an object's state transitions are complex.
+
+**Refatore para**
+
+Replace the conditionals with State classes that handle specific states and transitions between them.
+
+### Simplificando em uma imagem
+
+### Schema
+
+### Motivação
+
+A principal razão para refatorar para o Design Pattern State [DP ] é domar lógica condicional de alteração de estado excessivamente complexa. Essa lógica, que tende a se espalhar por uma classe, controla o estado de um objeto, incluindo como os estados fazem a transição para outros estados. Ao implementar o padrão State, você cria classes querepresentam estados específicos de um objeto e as transições entre esses estados. O objeto que tem seu estado alterado é conhecido em Design Patterns [DP ] Enquanto o `context`. Um contexto delega um comportamento dependente de estado a um objeto de estado. Objetos de estado fazem transições de estado em tempo de execução, fazendo com que o contexto aponte para um objeto de estado diferente.
+
+Mover a lógica condicional de alteração de estado de uma classe para uma família de classes que representam diferentes estados pode resultar em um design mais simples que fornece uma visão panorâmica melhor das transições entre os estados. Por outro lado, se você puder entender facilmente a lógica de transição de estado em uma classe, provavelmente não precisará refatorar para o padrão State (a menos que planeje adicionar muito mais transições de estado no futuro). A seção de exemplo para esta refatoração mostra um caso em que a lógica condicional de alteração de estado não é mais fácil de seguir ou estender e onde o padrão State pode fazer uma diferença real.
+
+Antes de refatorar para State, é sempre uma boa ideia verificar se refatorações mais simples, comoExtrair método[F ], pode ajudar a limpar a lógica condicional de mudança de estado. Se não puderem, a refatoração para State pode ajudar a remover ou reduzir muitas linhas de lógica condicional, gerando um código mais simples, mais fácil de entender e estender.
+
+Essa Refatoração Replace State-Altering Conditionals with State é diferente da de Martin Fowler Replace Type Code with State/Strategy [F ] pelas seguintes razões.
+
++ Diferenças entre State e Strategy: O padrão State é útil para uma classe que deve transitar facilmente entre instâncias de uma família de classes state, enquanto o padrão Strategy é útil para permitir que uma classe delegue a execução de um algoritmo para uma instância de uma família de classes Strategy. Devido a essas diferenças, a motivação e a mecânica para refatorar esses dois padrões é diferente (consulte Replace Conditional Logic with Strategy, 129). 
++ Mecânica end-to-end: Martin deliberadamente não documenta uma refatoração completa para o padrão State porque a implementação completa depende de uma refatoração adicional que ele escreveu, Replace Conditional with Polymorphism[F ]. Embora eu respeite essa decisão, achei que seria mais útil para os leitores entender como a refatoração funciona de ponta a ponta, então minhas seções Mecânica e Exemplo delineiam todas as etapas para levá-lo da lógica de mudança de estado condicional para uma implementação de estado .
+
+Se seus objetos de estado não tiverem variáveis de instância (ou seja, eles são apátrida ), você pode otimizar o uso da memória fazendo com que os objetos de contexto compartilhem instâncias das instâncias de estado sem estado. Os padrões Flyweight e Singleton [DP ] são frequentemente usados para implementar o compartilhamento (por exemplo, consulte Instanciação de Limite com Singleton , 296). No entanto, é sempre melhor adicionar código de compartilhamento de estado depois seus usuários experimentam atrasos no sistema e um criador de perfil aponta para o código de instanciação de estado como um gargalo principal.
+
+### Prós e Contras
+
+**Prós**
+
++ Reduz ou remove a lógica condicional de mudança de estado.
+
++ Simplifica a lógica complexa de mudança de estado.
++ Fornece uma boa visão panorâmica da lógica de mudança de estado.
+
+**Contras**
+
++ Complica um projeto quando a lógica de transição de
+  estado já é fácil de seguir.
+
+### Mecânica da Refatoração
+
+1 - A classe de `context` é uma classe que contém o campo com o estado original, um campo que é atribuído ou comparado a uma família de constantes durante as transições de estado. Aplicar Replace Type Code with Class (286) no campo de estado original de forma que seu tipo se torne uma classe. Chamaremos essa nova classe de superclasse de estado.
+
+A classe context é conhecida como State: Context e a superclasse state são State
+
++ Compilar.
+
+2 - Cada constante na superclasse de estado agora se refere a uma instância da superclasse de estado. Apply Extract Subclass [F] para produzir uma subclasse (conhecida como State: ConcreteState [DP ]) por constante, então atualize as constantes na superclasse de estado para que cada uma se refira à instância de subclasse correta da superclasse de estado. Por fim, declare a superclasse de estado como abstrata.
+
+Compilar.
+
+3 - Encontre um método de classe de contexto que altere o valor do campo de estado original com base na lógica de transição de estado. Copie esse método para a superclasse de estado, fazendo as alterações mais simples possíveis para que o novo método funcione. (Um comum,simplesa mudança é passar a classe de contexto para o método para ter métodos de chamada de código na classe de contexto.) Finalmente, substitua o corpo do método de classe de contexto por uma chamada de delegação para o novo método.
+
+Compilar e testar.
+
+Repita esta etapa para cada método de classe de contexto que altera o valor do campo de estado original com base na lógica de transição de estado.
+
+4 - Escolha um estado no qual a classe de contexto pode entrar e identifique quais métodos de superclasse de estado fazem essa transição de estado para outros estados. Copie o(s) método(s) identificado(s), se houver, para a subclasse associada ao estado escolhido e remova toda a lógica não relacionada.
+
+A lógica não relacionada geralmente inclui verificações de um estado atual ou lógica que faz a transição para estados não relacionados.
+
++ Compilar e testar.
+
+Repita para todos os estados em que a classe de contexto pode entrar.
+
+5 - Exclua os corpos de cada um dos métodos copiados para a superclasse de estado durante a etapa 3 para produzir uma implementação vazia para cada método.
+
++ Compilar e testar.
+
+### Exemplo
+
+Para entender quando faz sentido refatorar para o padrão State, é útil estudar uma classe que gerencia seu estado sem exigir a sofisticação do padrão State. `SystemPermission` é uma aula assim. Ele usa lógica condicional simples para acompanhar o estado de uma solicitação de permissão para acessar um sistema de software. Ao longo da vida de um  `SystemPermission` objeto, uma variável de instância chamada `state`
+transições entre os estados solicitado, reclamado, negado, e garantido. Aqui está um diagrama de estado das possíveis transições:
+
+07-04-state-02.jpg
+
+Abaixo está o código para `SystemPermission` e um fragmento de código de teste para mostrar como a classe é usada:
+
+```java
+ic class SystemPermission {
+    // ...
+    private SystemProfile profile; 
+    private SystemUser requestor; 
+    private SystemAdmin admin; 
+    private boolean isGranted; 
+    private String state; 
+    public final static String REQUESTED = "REQUESTED"; 
+    public final static String CLAIMED = "CLAIMED";
+    public final static String GRANTED = "GRANTED"; 
+    public final static String DENIED = "DENIED"; 
+    
+    public SystemPermission(SystemUser requestor, SystemProfile profile) { 
+        this.requestor = requestor; 
+        this.profile = profile; 
+        state = REQUESTED; 
+        isGranted = false; 
+        notifyAdminOfPermissionRequest(); 
+    } 
+    
+    public void claimedBy(SystemAdmin admin) { 
+        if (!state.equals(REQUESTED)) 
+            return; 
+            
+        willBeHandledBy(admin); 
+        state = CLAIMED; 
+    } 
+    
+    public void deniedBy(SystemAdmin admin) { 
+        if (!state.equals(CLAIMED)) 
+            return; 
+            
+        if (!this.admin.equals(admin)) 
+            return; 
+        
+        isGranted = false; 
+        state = DENIED; 
+        notifyUserOfPermissionRequestResult(); 
+    }
+
+    public void grantedBy(SystemAdmin admin) { 
+        if (!state.equals(CLAIMED)) 
+            return; 
+            
+        if (!this.admin.equals(admin)) 
+            return; 
+            
+        state = GRANTED; 
+        isGranted = true; 
+        notifyUserOfPermissionRequestResult(); 
+    }
+}
+
+public class TestStates extends TestCase {
+    // ...
+    private SystemPermission permission; 
+    
+    public void setUp() { 
+        permission = new SystemPermission(user, profile); 
+    } 
+    
+    public void testGrantedBy() { 
+        permission.grantedBy(admin); 
+        assertEquals("requested", permission.REQUESTED, permission.state()); 
+        assertEquals("not granted", false, permission.isGranted()); 
+        permission.claimedBy(admin); 
+        permission.grantedBy(admin); 
+        assertEquals("granted", permission.GRANTED, permission.state()); 
+        assertEquals("granted", true, permission.isGranted()); 
+    }
+}
+```
+
+Observe como a variável de instância, `state`, é atribuído a valores diferentes conforme os clientes chamam `SystemPermission` métodos. Agora observe a lógica condicional geral em `SystemPermission` . Essa lógica é responsável pela transição entre os estados, mas a lógica não é muito complicada, então o
+código não requer a sofisticação do padrão State.
+
+Essa lógica de mudança de estado condicional pode rapidamente se tornar difícil de seguir à medida que mais comportamento do mundo real é adicionado ao `SystemPermission`  aula. Por exemplo, ajudei a projetar um sistema de segurança no qual os usuários precisavam obter permissões UNIX de banco de dados antes que o usuário pudesse receber permissão geral para acessar um determinado sistema de software. A lógica de transição de estado que requer permissão do UNIX antes que a permissão geral possa ser concedida se parece com isto:
+
+07-04-state-03.jpg
+
+Adicionar suporte para permissão UNIX torna `SystemPermission` a lógica condicional de alteração de estado é mais complicada do que costumava ser. Considere o seguinte:
+
+```java
+public class SystemPermission {
+    // ...
+    public void claimedBy(SystemAdmin admin) {
+        if (!state.equals(REQUESTED) && !state.equals(UNIX_REQUESTED)) 
+            return; 
+            
+        willBeHandledBy(admin); 
+        if (state.equals(REQUESTED)) 
+            state = CLAIMED; 
+        else if (state.equals(UNIX_REQUESTED)) 
+            state = UNIX_CLAIMED; 
+        
+    } 
+    
+    public void deniedBy(SystemAdmin admin) { 
+        if (!state.equals(CLAIMED) && !state.equals(UNIX_CLAIMED)) 
+            return; 
+            
+        if (!this.admin.equals(admin)) 
+            return; 
+            
+        isGranted = false; 
+        isUnixPermissionGranted = false; 
+        state = DENIED; 
+        notifyUserOfPermissionRequestResult(); 
+    } 
+    
+    public void grantedBy(SystemAdmin admin) { 
+        if (!state.equals(CLAIMED) && !state.equals(UNIX_CLAIMED)) 
+            return; 
+            
+        if (!this.admin.equals(admin)) 
+            return; 
+        
+        if (profile.isUnixPermissionRequired() && state.equals(UNIX_CLAIMED))
+            isUnixPermissionGranted = true; 
+        else if (profile.isUnixPermissionRequired() && !isUnixPermissionGranted()) { 
+            state = UNIX_REQUESTED; 
+            notifyUnixAdminsOfPermissionRequest(); 
+            return; 
+        } 
+        state = GRANTED; 
+        isGranted = true; 
+        notifyUserOfPermissionRequestResult(); 
+    }
+}
+```
+
+Uma tentativa pode ser feita para simplificar este código aplicando Extrair método [F]. Por exemplo, eu poderia refatorar o método  `grantedBy()` para:
+
+```java
+public void grantedBy(SystemAdmin admin) { 
+    if ( !isInClaimedState() ) 
+        return; 
+    
+    if (!this.admin.equals(admin)) 
+        return; 
+    
+    if ( isUnixPermissionRequestedAn dClaimed() ) 
+        isUnixPermissionGranted = true;
+    else if ( isUnixPermisionDesiredButNotRequested() ) { 
+        state = UNIX_REQUESTED; 
+        notifyUnixAdminsOfPermissionRequest(); 
+        return; 
+    } 
+// ...
+```
+
+Embora isso seja uma melhoria, `SystemPermission` agora tem muita lógica booleana específica do estado (por exemplo, métodos como `isUnixPermissionRequestedAndClaimed`() ), e a `grantedBy()` método
+ainda não é simples. **AGORA é hora de ver como simplifiquei as coisas refatorando para o padrão State.**
+
+1 - `SystemPermission` tem um campo chamado `state`, que é do tipo  `String` . O primeiro passo é mudar estado para ser uma classe aplicando a refatoração Replace Type Code with Class (286). Isso produz a  eguinte nova classe:
+
+```java
+public class PermissionState { 
+    private String name;
+    
+    private PermissionState(String name) { 
+        this.name = name; 
+    } 
+    
+    public final static PermissionState REQUESTED = new PermissionState("REQUESTED"); 
+    public final static PermissionState CLAIMED = new PermissionState("CLAIMED"); 
+    public final static PermissionState GRANTED = new PermissionState("GRANTED"); 
+    public final static PermissionState DENIED = new PermissionState("DENIED"); 
+    public final static PermissionState UNIX_REQUESTED = new PermissionState("UNIX_REQUESTED"); 
+    public final static PermissionState UNIX_CLAIMED = new PermissionState("UNIX_CLAIMED"); 
+    public String toString() { 
+        return name; 
+    } 
+}
+```
+
+A refatoração também substitui `state` de `SystemPermission`  com um chamado a  `permissionState,` , que é do tipo  `PermissionState` 
+
+```java
+public class SystemPermission {
+
+    private PermissionState permissionState;
+    
+    public SystemPermission(SystemUser requestor, SystemProfile profile) { 
+        // ... 
+        setState(PermissionState.REQUESTED); 
+        // ... 
+    } 
+    
+    public PermissionState getState() { 
+        return permissionState ; 
+    } 
+    
+    private void setState(PermissionState state) { 
+        permissionState = state; 
+    } 
+    
+    public void claimedBy(SystemAdmin admin) { 
+        if (!getState().equals(PermissionState.REQUESTED) && !getState().equals(PermissionState.UNIX_REQUESTED)) 
+            return; 
+        
+        // ...     
+    }
+}
+```
+
+2 - `PermissionState` agora contém seis constantes, todas as quais são instâncias de `PermissionState` . Para tornar cada uma dessas constantes uma instância de uma subclasse de `PermissionState` , eu aplico Extrair subclasse[F ] seis vezes para produzir o resultado mostrado no diagrama a seguir.
+
+Porque nenhum cliente jamais precisará instanciar `PermissionState` , declaro-o abstrato:
+
+```java
+public abstract class PermissionState...
+```
+
+O compilador está satisfeito com todo o novo código, então continuo.
+
+3 - Em seguida, encontro um método em `SystemPermission` que muda o valor `permission` com base na lógica de transição de estado. Existem três desses métodos em `SystemPermission` : `claimedBy()`,
+`deniedBy()`, e `grantedBy()`. Eu começo trabalhando com reivindicado por (). Devo copiar este método para `PermissionState` , fazendo alterações suficientes para compilar e, em seguida, substituindo o corpo do original de `claimedBy()` método com uma chamada para o novo  `PermissionState` versão:
+
+```java
+public class SystemPermission {
+    // private 
+    void setState(PermissionState state) { // now has package-level visibility 
+        permissionState = state; 
+    } 
+    
+    public void claimedBy(SystemAdmin admin) {
+        permissionState.claimedBy(admin, this); 
+    } 
+    
+    void willBeHandledBy(SystemAdmin admin) { 
+        this.admin = admin; 
+    } 
+}
+abstract class PermissionState {
+    public void claimedBy(SystemAdmin admin, SystemPermission permission) { 
+        if (!permission.getState().equals(REQUESTED) && !permission.getState().equals(UNIX_REQUESTED)) 
+            return; 
+            
+        permission.willBeHandledBy(admin); 
+
+        if (permission.getState().equals(REQUESTED)) 
+            permission.setState(CLAIMED); 
+        else if (permission.getState().equals(UNIX_REQUESTED)) { 
+            permission.setState(UNIX_CLAIMED); 
+        } 
+    } 
+}
+```
+
+Depois de compilar e testar para ver se as alterações funcionaram, repito esta etapa para `deniedBy()` e  `grantedBy()` .
+
+4 - Agora eu escolho um estado que `SystemPermission` pode entrar e identificar quais `PermissionState` métodos fazem essa transição de estado para outros estados. vou começar com o REQUESTED estado. Este
+estado só pode transitar para o CLAIMED estado, e a transição acontece no `PermissionState.claimedBy()` método. Eu copio esse método para a classe `PermissionRequested`:
+
+```java
+class PermissionRequested extends PermissionState {
+    public void claimedBy(SystemAdmin admin, SystemPermission permission) { 
+        if (!permission.getState().equals(REQUESTED) && !permission.getState().equals(UNIX_REQUESTED)) 
+            return; 
+        
+        permission.willBeHandledBy(admin); 
+
+        if (permission.getState().equals(REQUESTED)) 
+            permission.setState(CLAIMED); 
+        else if (permission.getState().equals(UNIX_REQUESTED)) { 
+            permission.setState(UNIX_CLAIMED); 
+        } 
+    } 
+}
+```
+
+Muita lógica neste método não é mais necessária. Por exemplo, qualquer coisa relacionada ao UNIX_REQUESTED estado não é necessário porque estamos preocupados apenas com o REQUESTED estado na classe `PermissionRequested`. Também não precisamos verificar se nosso estado atual é REQUESTED porque o fato de estarmos na classe `PermissionRequested` nos diz isso. Então eu posso reduzir esse código para o seguinte:
+
+```java
+class PermissionRequested extends PermissionState {
+    public void claimedBy(SystemAdmin admin, SystemPermission permission) { 
+        permission.willBeHandledBy(admin); 
+        permission.setState(CLAIMED);
+    } 
+}
+```
+
+Como sempre, compilo e testo para ter certeza de que não quebrei nada. Agora repito este passo para os outros cinco estados. Vejamos o que é necessário para produzir os estados `PermissionClaimed` e `PermissionGranted`.
+
+O estado `CLAIMED` pode transitar para DENIED, GRANTED, ou UNIX_REQUESTED. Os métodos `deniedBy()` ou `grantedBy()` cuidam dessas transições, então eu copio esses métodos para o
+`PermissionClaimed` e exclua a lógica desnecessária:
+
+```java
+class PermissionClaimed extends PermissionState {
+    // ...
+    public void deniedBy(SystemAdmin admin, SystemPermission permission) { 
+        // if (!permission.getState().equals(CLAIMED) && !permission.getState().equals(UNIX_CLAIMED)) 
+        //     return; 
+        
+        if (!permission.getAdmin().equals(admin)) 
+            return; 
+        
+        permission.setIsGranted(false); 
+        permission.setIsUnixPermissionGranted(false); 
+        permission.setState(DENIED); 
+        permission.notifyUserOfPermissionRequestResult(); 
+    } 
+    
+    public void grantedBy(SystemAdmin admin, SystemPermission permission) { 
+        // if (!permission.getState().equals(CLAIMED) && !permission.getState().equals(UNIX_CLAIMED))
+        //     return; 
+        
+        if (!permission.getAdmin().equals(admin)) 
+            return; 
+        
+        // if (permission.getProfile().isUnixPermissionRequired() && permission.getState().equals(UNIX_CLAIMED)) 
+        //     permission.setIsUnixPermissionGranted(true); 
+        // else 
+        if (permission.getProfile().isUnixPermissionRequired() && !permission.isUnixPermissionGranted()) { 
+            permission.setState(UNIX_REQUESTED); 
+            permission.notifyUnixAdminsOfPermissionRequest(); 
+            return; 
+        } 
+        permission.setState(GRANTED); 
+        permission.setIsGranted(true); 
+        permission.notifyUserOfPermissionRequestResult(); 
+    }
+}
+```
+
+Para `PermissionGranted`,, meu trabalho é fácil. uma vez por  `SystemPermission` atinge
+o estado `GRANTED`, ele não tem outros estados para os quais possa fazer a transição (ou seja, está em um estado final). Portanto, esta classe não precisa implementar nenhum método de transição (por exemplo, reivindicado por `claimedBy()`. Na verdade, ele realmente precisa herdar implementações vazias dos métodos de transição, que é exatamente o que acontecerá após a próxima etapa da refatoração.
+
+5 -  Em  `PermissionState` , agora posso excluir os corpos de reivindicado por (), `deniedBy()` , e `grantedBy()` , deixando o seguinte:
+
+```java
+abstract class PermissionState { 
+    public String toString(); 
+    public void claimedBy(SystemAdmin admin, SystemPermission permission) {}
+    public void deniedBy(SystemAdmin admin, SystemPermission permission) {} 
+    public void grantedBy(SystemAdmin admin, SystemPermission permission) {} 
+}
+```
+
+Eu compilo e testo para confirmar se os estados continuam se comportando corretamente. Eles fazem. A única questão que resta é a melhor maneira de celebrar essa refatoração bem-sucedida para o padrão State.
+
 ## Replace Implicit Tree with Composite
 
 Envolve árvore o qu quqsse nunca se usa
