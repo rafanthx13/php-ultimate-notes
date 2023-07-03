@@ -4,7 +4,7 @@
 | Long Method                                    | Compose Method;<br>Move Accumulaton to Collecting Parameter;<br>Replace Conditional Dispatcher with Command;<br>Move Accumulation to Visitor;<br>Replace Conditional Logic with Strategy; |
 | Conditional Complexity                         | Replace Conditional Logic with Strategy;<br>Move Embellishment to Decorator;<br>Replace State-Altering Conditionals with State;<br>Introduce Null Object; |
 | Primitive Obsession                            | Replace Type Code with Class;<br>Replace State-Altering Conditionals with State;<br>Replace Conditional Logic with Strategy;<br>Replace Implicit Tree with Composite;<br>Replace Implicitt Language with Interpreter;<br>Move Embellishment to Decorator;<br>Encapsulate Composite with Builder; |
-| Indecent Exposute                              | Encapsulate Classes with Factory                             |
+| Indecent Exposure                              | Encapsulate Classes with Factory                             |
 | Solution Sprawl                                | Move Creation KNowledge to Factory                           |
 | Alternativ Classes<br>with Diferent Interfaces | Unify Interfaces with Adapter                                |
 | Lazy Class                                     | Inline Singleton                                             |

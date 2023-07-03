@@ -1,6 +1,12 @@
 ### O que é
 
-### Simplificando em uma imagem
+**Se**
+
+**Refatore para:**
+
+**Descrição do capítulo**
+
+### Resumo
 
 ### Schema
 
@@ -8,13 +14,13 @@
 
 ### Prós e Contras
 
+**Prós:**
+
+**Contras:**
+
 ### Mecânica da Refatoração
 
 ### Exemplo
 
-130-247
-378-517
-
-01-20
-
-115-140
+01-038
+66-118
