@@ -303,11 +303,12 @@ um gargalo, e dividir os laços muitas vezes permite outras otimizações mais
 eficazes.
 
 **Resumo Final**
+(Copy) Use quando encontrar um loop que está fazendo várias coisas ao mesmo tempo. Essa refatoração acaba fazendo você repetir o loop na busca por um código mais claro. Isso pode ser desconfortável, mas se a duplicação do loop acabar sendo o gargalo, a refatoração tornará mais fácil combinar o loop novamente depois.
 
 ## Replace Loop with Pipeline
 
 **Site Traduzido**
-Pipelines encadeados como filtro, mapa, redução geralmente são significativamente mais legíveis do que loops for complexos que executam várias instruções. Quando apropriado, converta o loop for em um pipeline. De volta ao topo
+Pipelines encadeados como filter, map e reduce geralmente são significativamente mais legíveis do que loops for complexos que executam várias instruções. Quando apropriado, converta o loop-for em um pipeline dessas funções.
 
 **Motivação**
 Assim como a maioria dos programadores, aprendi a usar laços para iterar
@@ -358,6 +359,6 @@ até mesmo a menor das bases de código em um sistema de controle de
 versões, isso não é mais necessário.
 
 **Resumo Final**
-
+Quando um código deixa de ser usado, devemos apagá-lo. Apague código morto, que tem um if que nunca entra ou comentários. Você sempre pode recuperá-lo com git.
 
 
