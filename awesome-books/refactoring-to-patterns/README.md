@@ -66,3 +66,6 @@ duplication or to simplify or clarify code.
 
 11. Utiitarios
 + 612 => 631 (19 páginas)
+
+
+https://docs.google.com/document/d/1PafszGngnmfcolkjHqILyT_dvo9uul3P1XKI-ejLvH4/edit?usp=sharing
