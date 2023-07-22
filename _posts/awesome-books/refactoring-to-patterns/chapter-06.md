@@ -1,57 +1,18 @@
 # Chapter 6. Creation
 
-Embora todo sistema orientado a objetos crie objetos ou estruturas de
-objetos, o código de criação nem sempre é livre de duplicação, simples,
-intuitivo ou tão livremente acoplado ao código do cliente quanto poderia ser.
-As seis refatorações neste capítulo visam problemas de projeto em tudo,
-desde construtores até lógica de construção excessivamente complicada e
-Singletons desnecessários [DP ]. Embora essas refatorações não abordem
-todos os problemas de design criacional que você provavelmente
-encontrará, elas abordam alguns dos problemas mais comuns.
+Embora todo sistema orientado a objetos crie objetos ou estruturas de objetos, o código de criação nem sempre é livre de duplicação, simples, intuitivo ou tão livremente acoplado ao código do cliente quanto poderia ser. As seis refatorações neste capítulo visam problemas de projeto em tudo, desde construtores até lógica de construção excessivamente complicada e Singletons desnecessários [DP ]. Embora essas refatorações não abordem todos os problemas de design criacional que você provavelmente encontrará, elas abordam alguns dos problemas mais comuns.
 
-Se houver muitos construtores em uma classe, os clientes terão
-dificuldade em saber qual construtor chamar. Uma solução é
-reduzir o número de construtores aplicando refatorações como
-Extrair classe[F ] ouExtrair subclasse[F ]. Se isso não for possível
-ou útil, você pode esclarecer a intenção dos construtores
-aplicandoSubstituir construtores por métodos de criação (57).
+Se houver muitos construtores em uma classe, os clientes terão dificuldade em saber qual construtor chamar. Uma solução é reduzir o número de construtores aplicando refatorações como Extrair classe[F ] ouExtrair subclasse[F ]. Se isso não for possível ou útil, você pode esclarecer a intenção dos construtores aplicandoSubstituir construtores por métodos de criação (57).
 
-O que é um Método de Criação? É simplesmente um método estático ou não
-estático que cria e retorna uma instância de objeto. Para este livro, decidi
-definir o padrão Creation Method para ajudar a diferenciá-lo do Factory
-Method [DP ] padrão. Um método de fábrica é útil para a criação polimórfica.
-Ao contrário de um método de criação, um método de fábrica não pode ser
-estático e deve ser implementado por pelo menos duas classes, geralmente
-uma superclasse e uma subclasse. Se as classes em uma hierarquia
-implementam um método de forma semelhante, exceto para uma etapa de
-criação de objeto, você provavelmente pode remover o código duplicado
-aplicando primeiroIntroduza a criação polimórfica com o método de fábrica
-(88).
+O que é um Método de Criação? É simplesmente um método estático ou não estático que cria e retorna uma instância de objeto. Para este livro, decidi definir o padrão Creation Method para ajudar a diferenciá-lo do Factory Method [DP ] padrão. Um método de fábrica é útil para a criação polimórfica. Ao contrário de um método de criação, um método de fábrica não pode ser estático e deve ser implementado por pelo menos duas classes, geralmente uma superclasse e uma subclasse. Se as classes em uma hierarquia implementam um método de forma semelhante, exceto para uma etapa de criação de objeto, você provavelmente pode remover o código duplicado aplicando primeiroIntroduza a criação polimórfica com o método de fábrica (88).
 
-Uma classe que é uma Fábrica é aquela que implementa um ou mais
-Métodos de Criação. Se dados e/ou código usados na criação do objetose espalhe por várias classes, você provavelmente se encontrará
-atualizando o código com frequência em vários lugares, um sinal claro do
-cheiroExpansão de soluções (43). AplicandoMover conhecimento de
-criação para a fábrica (68)reduzirá a expansão criacional consolidando o
-código e os dados de criação em uma única fábrica.
+Uma classe que é uma Fábrica é aquela que implementa um ou mais Métodos de Criação. Se dados e/ou código usados na criação do objetose espalhe por várias classes, você provavelmente se encontrará atualizando o código com frequência em vários lugares, um sinal claro do cheiroExpansão de soluções (43). AplicandoMover conhecimento de criação para a fábrica (68)reduzirá a expansão criacional consolidando o código e os dados de criação em uma única fábrica.
 
-Encapsule Classes com Factory (80)é outra refatoração útil que envolve
-o padrão Factory. As duas motivações mais comuns para aplicar essa
-refatoração são (1) garantir que os clientes se comuniquem com
-instâncias de classes por meio de uma interface comum e (2) reduzir o
-conhecimento do cliente sobre as classes enquanto torna as instâncias
-das classes acessíveis por meio de uma fábrica.
+Encapsule Classes com Factory (80)é outra refatoração útil que envolve o padrão Factory. As duas motivações mais comuns para aplicar essa refatoração são (1) garantir que os clientes se comuniquem com instâncias de classes por meio de uma interface comum e (2) reduzir o conhecimento do cliente sobre as classes enquanto torna as instâncias das classes acessíveis por meio de uma fábrica.
 
-Para simplificar a construção de uma estrutura de objeto, não existe padrão
-melhor que o Builder [DP ].Encapsular composição com construtor (96)mostra
-como um Builder pode fornecer uma maneira mais simples e menos propensa
-a erros de construir um Composite [DP ].
+Para simplificar a construção de uma estrutura de objeto, não existe padrão melhor que o Builder [DP ].Encapsular composição com construtor (96)mostra como um Builder pode fornecer uma maneira mais simples e menos propensa a erros de construir um Composite [DP ].
 
-A refatoração final nesta seção éSingleton embutido (114). Foi uma
-alegria escrever esta refatoração, pois muitas vezes encontro
-Singletons que não precisam existir. Esta refatoração, que mostra
-como remover um Singleton de seu código, apresenta conselhos
-sobre Singletons de Ward Cunningham, Kent Beck e Martin Fowler.
+A refatoração final nesta seção éSingleton embutido (114). Foi uma alegria escrever esta refatoração, pois muitas vezes encontro Singletons que não precisam existir. Esta refatoração, que mostra como remover um Singleton de seu código, apresenta conselhos sobre Singletons de Ward Cunningham, Kent Beck e Martin Fowler.
 
 ## Replace Constructors with Creation Methods
 
@@ -59,7 +20,11 @@ sobre Singletons de Ward Cunningham, Kent Beck e Martin Fowler.
 
 **Se**
 
+Constructors on a class make it hard to decide which constructor to call during development.
+
 **Refatore para:**
+
+Replace the constructors with intention-revealing Creation Methods that return object instances.
 
 **Descrição do capítulo**
 
@@ -71,95 +36,25 @@ sobre Singletons de Ward Cunningham, Kent Beck e Martin Fowler.
 
 ### Motivação
 
-Algumas linguagens permitem que você nomeie os construtores da
-maneira que desejar, independentemente do nome da classe. Outras
-linguagens, como Java e C++, não permitem isso; cada construtor deve ser
-nomeado após sua classe. Se você tiver um construtor simples, isso pode
-não ser um problema. Por outro lado, se você tiver vários construtores, os
-programadores terão que escolher qual construtor chamar estudando os
-parâmetros esperados e/ou vasculhando o código do construtor. O que há
-de errado com isso? Bastante.
+Algumas linguagens permitem que você nomeie os construtores da maneira que desejar, independentemente do nome da classe. Outras linguagens, como Java e C++, não permitem isso; cada construtor deve ser nomeado após sua classe. Se você tiver um construtor simples, isso pode não ser um problema. Por outro lado, se você tiver vários construtores, os programadores terão que escolher qual construtor chamar estudando os parâmetros esperados e/ou vasculhando o código do construtor. O que há de errado com isso? Muita coisa.
 
-Os construtores simplesmente não comunicam a intenção de forma
-eficiente ou eficaz. Quanto mais construtores você tiver, mais fácil será
-para os programadores escolherem o errado. Ter que escolher qual
-construtor chamar retarda o desenvolvimento, e o código que chama um
-dos muitos construtores geralmente falha em comunicar
-suficientemente a natureza do objeto que está sendo construído.
+Os construtores simplesmente não comunicam a intenção de forma eficiente ou eficaz. Quanto mais construtores você tiver, mais fácil será para os programadores escolherem o errado. Ter que escolher qual construtor chamar retarda o desenvolvimento, e o código que chama um dos muitos construtores geralmente falha em comunicar suficientemente a natureza do objeto que está sendo construído.
 
-Se precisar adicionar um novo construtor a uma classe com a mesma
-assinatura de um construtor existente, você está sem sorte. Como eles
-precisam compartilhar o mesmo nome, você não pode adicionar o
-novo construtor — já que não é possível ter dois construtores com a
-mesma assinatura na mesma classe, apesar do fato de que eles
-criariam diferentes tipos de objetos.
+Se precisar adicionar um novo construtor a uma classe com a mesma assinatura de um construtor existente, você está sem sorte. Como eles precisam compartilhar o mesmo nome, você não pode adicionar o novo construtor — já que não é possível ter dois construtores com a mesma assinatura na mesma classe, apesar do fato de que eles criariam diferentes tipos de objetos.
 
-É comum, particularmente em sistemas maduros, encontrar vários
-construtores que não estão mais sendo usados, mas continuam vivos no
-código. Por que esses construtores mortos ainda estão presentes? Na
-maioria das vezes é porque os programadores não sabem que os
-construtores não têm chamador. Ou eles não verificaram os chamadores
-(talvez porque a expressão de pesquisa que precisam formular é muito
-complicada) ou não estão usando um ambiente de desenvolvimento que
-destaca automaticamente o código não chamado. Seja qual for o motivo,
-os construtores mortos apenas incham uma classe e a tornam mais
-complicada do que o necessário.
+É comum, particularmente em sistemas maduros, encontrar vários construtores que não estão mais sendo usados, mas continuam vivos no código. Por que esses construtores mortos ainda estão presentes? Na maioria das vezes é porque os programadores não sabem que os construtores não têm chamador. Ou eles não verificaram os chamadores (talvez porque a expressão de pesquisa que precisam formular é muito complicada) ou não estão usando um ambiente de desenvolvimento que destaca automaticamente o código não chamado. Seja qual for o motivo, os construtores mortos apenas incham uma classe e a tornam mais complicada do que o necessário.
 
-Um Método de Criação pode ajudar a resolver esses problemas. Um método
-de criação é simplesmente um método estático ou não estático em uma
-classe que instancia novas instâncias da classe. Não há restrições de nome
-nos Métodos de Criação, então você pode nomeá-los para expressar
-claramente o que está criando (por exemplo,
-criarTermLoan()oucreateRevolver()). Esta nomenclatura
-flexibilidade significa que dois Métodos de Criação com nomes diferentes
-podem aceitar o mesmo número e tipo de argumentos. E para
-programadores que carecem de ambientes de desenvolvimento modernos,
-geralmente é mais fácil encontrar código de método de criação morto do que
-encontrar código de construtor morto porque as expressões de pesquisa em
-métodos nomeados especificamente são mais fáceis de formular do que as
-expressões de pesquisa em um grupo de construtores.
+Um Método de Criação pode ajudar a resolver esses problemas. Um método de criação é simplesmente um método estático ou não estático em uma classe que instancia novas instâncias da classe. Não há restrições de nome nos Métodos de Criação, então você pode nomeá-los para expressar claramente o que está criando (por exemplo, criarTermLoan()oucreateRevolver()). Esta nomenclatura flexibilidade significa que dois Métodos de Criação com nomes diferentes podem aceitar o mesmo número e tipo de argumentos. E para programadores que carecem de ambientes de desenvolvimento modernos, geralmente é mais fácil encontrar código de método de criação morto do que encontrar código de construtor morto porque as expressões de pesquisa em métodos nomeados especificamente são mais fáceis de formular do que as expressões de pesquisa em um grupo de construtores.
 
-Uma responsabilidade dessa refatoração é que ela pode introduzir uma maneira
-não padronizada de executar a criação. Se a maioria de suas classes são
-instanciadas usandonovoainda alguns são instanciados usando um
-Creation Method, os programadores terão que aprender como a
-criação é feita para cada classe. No entanto, essa técnica não
-padronizada de criação pode ser um mal menor do que ter classes com
-muitos construtores.
+Uma responsabilidade dessa refatoração é que ela pode introduzir uma maneira não padronizada de executar a criação. Se a maioria de suas classes são instanciadas usandonovoainda alguns são instanciados usando um Creation Method, os programadores terão que aprender como a criação é feita para cada classe. No entanto, essa técnica não padronizada de criação pode ser um mal menor do que ter classes com muitos construtores.
 
-Depois de identificar uma classe que possui muitos construtores, é melhor
-considerar a aplicaçãoExtrair classe[F ] ouExtrair subclasse[F ]antesvocê
-decide aplicar essa refatoração.Extrair classeé uma boa escolha se a classe
-em questão estiver simplesmente fazendo muito trabalho (isto é, se tiver
-muitas responsabilidades).Extrair subclasseé uma boa escolha se as
-instâncias da classe usarem apenas uma pequena parte das variáveis de
-instância da classe.
+Depois de identificar uma classe que possui muitos construtores, é melhor considerar a aplicaçãoExtrair classe[F ] ouExtrair subclasse[F ]antesvocê decide aplicar essa refatoração.Extrair classeé uma boa escolha se a classe em questão estiver simplesmente fazendo muito trabalho (isto é, se tiver muitas responsabilidades).Extrair subclasseé uma boa escolha se as instâncias da classe usarem apenas uma pequena parte das variáveis de instância da classe.
 
 ### Creation Methods and Factory Methods
 
-Como nossa indústria chama um método que cria objetos?
-Muitos programadores responderiam "Factory Method", após o
-nome dado a um padrão de criação em Design Patterns [DP ].
-Mas todos os métodos que criam objetos são verdadeiros
-Factory Methods? Dada uma definição ampla do termo (ou seja,
-um método que simplesmente cria objetos), a resposta seria um
-enfático "sim!" Mas, dada a maneira como os autores do padrão
-Factory Method o escreveram em 1995, fica claro que nem todo
-método que cria objetos oferece o tipo de acoplamento flexível
-fornecido por um Factory Method genuíno (por exemplo,
-consulteIntroduza a criação polimórfica com o método de fábrica
-, 88).
+Como nossa indústria chama um método que cria objetos? Muitos programadores responderiam "Factory Method", após o nome dado a um padrão de criação em Design Patterns [DP ]. Mas todos os métodos que criam objetos são verdadeiros Factory Methods? Dada uma definição ampla do termo (ou seja, um método que simplesmente cria objetos), a resposta seria um enfático "sim!" Mas, dada a maneira como os autores do padrão Factory Method o escreveram em 1995, fica claro que nem todo método que cria objetos oferece o tipo de acoplamento flexível fornecido por um Factory Method genuíno (por exemplo, consulteIntroduza a criação polimórfica com o método de fábrica , 88).
 
-Para nos ajudar a esclarecer ao discutir designs ou refatorações
-relacionadas à criação de objetos, estou usando o termo Método de
-Criação para me referir a um método estático ou não estático que
-cria instâncias de uma classe. Isso significa que todo Factory
-Method é um Método de Criação, mas não necessariamente o
-contrário. Isso também significa que você pode substituir o termo
-Método de Criação sempre que Martin Fowler usar o termo
-"método de fábrica" em Refatoração [F ] e sempre que Joshua
-Bloch usa o termo "método de fábrica estático" em Java efetivo [
-Bloch ].
+Para nos ajudar a esclarecer ao discutir designs ou refatorações relacionadas à criação de objetos, estou usando o termo Método de Criação para me referir a um método estático ou não estático que cria instâncias de uma classe. Isso significa que todo Factory Method é um Método de Criação, mas não necessariamente o contrário. Isso também significa que você pode substituir o termo Método de Criação sempre que Martin Fowler usar o termo "método de fábrica" em Refatoração [F ] e sempre que Joshua Bloch usa o termo "método de fábrica estático" em Java efetivo [ Bloch ].
 
 ### Prós e Contras
 
@@ -180,49 +75,33 @@ argumentos.
 
 ### Mecânica da Refatoração
 
-Antes de iniciar esta refatoração, identifique oconstrutor catch-all, um
-construtor completo ao qual outros construtores delegam seu trabalho. Se
-você não tiver um construtor abrangente, crie um aplicando Construtores
-de Cadeia (340).
+Antes de iniciar esta refatoração, identifique oconstrutor catch-all, um construtor completo ao qual outros construtores delegam seu trabalho. Se você não tiver um construtor abrangente, crie um aplicando Construtores de Cadeia (340).
 
-1 - Encontre um cliente que chame o construtor de uma classe para criar um tipo
-de instância. AplicarExtrair Método[F ] na chamada do construtor para produzir
-um método estático público. Este novo método é umamétodo de criação. Agora
-apliqueMétodo de movimentação[F ] para mover o método de criação para a
-classe que contém o construtor escolhido.
+1 - Encontre um cliente que chame o construtor de uma classe para criar um tipo de instância. Aplicar Extrair Método [F] na chamada do construtor para produzir um método estático público. Este novo método é umamétodo de criação. Agora aplique Método de movimentação [F] para mover o método de criação para a classe que contém o construtor escolhido.
 
 Compilar e testar.
 
-2 - Encontre todos os chamadores do construtor escolhido que instanciam o
-mesmo tipo de instância que o método de criação e atualize-os para
-chamar o método de criação.
+2 - Encontre todos os chamadores do construtor escolhido que instanciam o mesmo tipo de instância que o método de criação e atualize-os para chamar o método de criação.
 
 Compilar e testar.
 
-3 - Se o construtor escolhido estiver encadeado a outro construtor, faça o
-método de criação chamar o construtor encadeado em vez do construtor
-escolhido. Você pode fazer isso inserindo o construtor, uma refatoração
-que se assemelhaMétodo embutido[F ].
+3 - Se o construtor escolhido estiver encadeado a outro construtor, faça o método de criação chamar o construtor encadeado em vez do construtor escolhido. Você pode fazer isso inserindo o construtor, uma refatoração que se assemelha Método embutido[F ].
 
 Compilar e testar.
 
-4 - Repita as etapas 1–3 para cada construtor na classe que você gostaria de
-transformar em um método de criação.
+4 - Repita as etapas 1–3 para cada construtor na classe que você gostaria de transformar em um método de criação.
 
-5 - Se um construtor na classe não tiver chamadores fora da classe,
-torne-o não público.
+5 - Se um construtor na classe não tiver chamadores fora da classe, torne-o não público.
 
 Compilar.
 
-### Exemplo
+## Exemplo
 
-Este exemplo é inspirado no domínio bancário e em uma determinada calculadora de
-risco de empréstimo que passei vários anos escrevendo, ampliando e mantendo. O
-Empréstimoclasse tinha vários construtores, como mostrado
-no seguinte código.
+Este exemplo é inspirado no domínio bancário e em uma determinada calculadora de risco de empréstimo que passei vários anos escrevendo, ampliando e mantendo. A classe `Loan` tinha vários construtores, como mostrado no seguinte código.
 
 ```java
 public class Loan {
+    
     private static String TERM_LOAN = “TL”;
     private static String REVOLVER = “RC”;
     private static String RCTL = “RCTL”;
@@ -233,24 +112,29 @@ public class Loan {
     private int customerRating;
     private Date maturity;
     private Date expiry;
+    
     public Loan(float notional, float outstanding, int customerRating, Date expiry) {
         this(TERM_LOAN, new TermROC(), notional, outstanding,
         customerRating, expiry, null);
     }
+    
     public Loan(float notional, float outstanding, int customerRating, Date expiry,
 Date maturity) {
         this(RCTL, new RevolvingTermROC(), notional, outstanding, customerRating,
         expiry, maturity);
     }
+    
     public Loan(CapitalStrategy strategy, float notional, float outstanding, 
     int customerRating, Date expiry, Date maturity) {
         this(RCTL, strategy, notional, outstanding, customerRating,
         expiry, maturity);
     }
+    
     public Loan(String type, CapitalStrategy strategy, float notional,
     float outstanding, int customerRating, Date expiry) {
         this(type, strategy, notional, outstanding, customerRating, expiry, null);
     }
+    
     public Loan(String type, CapitalStrategy strategy, float notional,
     float outstanding, int customerRating, Date expiry, Date maturity) {
         this.type = type;
@@ -262,59 +146,27 @@ Date maturity) {
         if (RCTL.equals(type))
         this.maturity = maturity;
     }
+    
 }
 ```
 
-Empréstimopoderia ser usado para representar sete tipos de empréstimos. Vou discutir
-apenas três deles aqui. Um empréstimo a prazo é um empréstimo que deve ser pago
-integralmente até a data de vencimento. Um revólver, que é como um cartão de crédito, é
-um empréstimo que significa "crédito rotativo": você tem um limite de gastos e um prazo de
-validade. Um empréstimo a prazo de crédito rotativo (RCTL) é um revólver que se transforma
-em um empréstimo a prazo quando o revólver expira.
+`Loan` poderia ser usado para representar sete tipos de empréstimos. Vou discutir apenas três deles aqui. Um empréstimo a prazo é um empréstimo que deve ser pago integralmente até a data de vencimento. Um `Revolving`, que é como um cartão de crédito, é um empréstimo que significa "crédito rotativo": você tem um limite de gastos e um prazo de validade. Um empréstimo a prazo de crédito rotativo (RCTL) é um revólver que se transforma em um empréstimo a prazo quando o revólver expira.
 
-Dado que a calculadora oferece suporte a sete tipos de empréstimos, você pode se
-perguntar por queEmpréstimonão era uma superclasse abstrata com uma subclasse para
-cada tipo de empréstimo. Afinal, isso reduziria o número de construtores
-necessários paraEmpréstimoe suas subclasses. Haviam dois
-razões pelas quais esta não foi uma boa ideia.
+Dado que a calculadora oferece suporte a sete tipos de empréstimos, você pode se perguntar por que `Loan` não era uma superclasse abstrata com uma subclasse para cada tipo de empréstimo. Afinal, isso reduziria o número de construtores necessários para `Loan` e suas subclasses. Haviam dois razões pelas quais esta não foi uma boa ideia.
 
-01 => .O que distingue os diferentes tipos de empréstimos não são tanto seus
-campos, mas como os números, como capital, renda e duração, são
-calculados. Para dar suporte a três maneiras diferentes de calcular o capital
-para um empréstimo a prazo, não gostaríamos de criar três subclasses
-diferentes deEmpréstimo. É mais fácil apoiar umEmpréstimoclasse e
-tem três diferentesEstratégiaclasses para um empréstimo a prazo (veja
-o exemplo deSubstitua a lógica condicional pela estratégia , 129).
+01 => .O que distingue os diferentes tipos de empréstimos não são tanto seus campos, mas como os números, como capital, renda e duração, são calculados. Para dar suporte a três maneiras diferentes de calcular o capital para um empréstimo a prazo, não gostaríamos de criar três subclasses diferentes de `Loan` . É mais fácil apoiar um `Loan` classe e tem três diferentesEstratégiaclasses para um empréstimo a prazo (veja o exemplo deSubstitua a lógica condicional pela estratégia , 129).
 
-02 => O aplicativo que usouEmpréstimoinstâncias necessárias para transformar
-empréstimos de um tipo de empréstimo para outro. Essa transformação era
-mais fácil de fazer quando envolvia alterar alguns campos em um único
-Empréstimoinstância, em vez de mudar completamente uma instância de um
-Empréstimosubclasse em outra.
+02 => O aplicativo que usou `Loan` instâncias necessárias para transformar empréstimos de um tipo de empréstimo para outro. Essa transformação era mais fácil de fazer quando envolvia alterar alguns campos em um único `Loan` instância, em vez de mudar completamente uma instância de um `Loan` subclasse em outra.
 
-Se você olhar para oEmpréstimocódigo-fonte apresentado anteriormente, você
-verá que ele possui cinco construtores, o último dos quais é seuconstrutor catch-
-all (verConstrutores de Cadeia , 340). Sem conhecimento especializado, é difícil
-saber quais os construtores que criam empréstimos a prazo, quais os que criam
-revólveres e quais os que criam RCTL.
+Se você olhar para o `Loan` código-fonte apresentado anteriormente, você verá que ele possui cinco construtores, o último dos quais é seuconstrutor catch- all (verConstrutores de Cadeia , 340). Sem conhecimento especializado, é difícil saber quais os construtores que criam empréstimos a prazo, quais os que criam revólveres e quais os que criam RCTL.
 
-Por acaso sei que um RCTL precisa tanto de uma data de expiração quanto de
-uma data de vencimento, então sei que para criar um RCTL devo chamar um
-construtor que me deixe passar as duas datas. Você sabia disso? Você acha que
-o próximo programador que ler este código saberá disso?
+Por acaso sei que um RCTL precisa tanto de uma data de expiração quanto de uma data de vencimento, então sei que para criar um RCTL devo chamar um construtor que me deixe passar as duas datas. Você sabia disso? Você acha que o próximo programador que ler este código saberá disso?
 
-O que mais está embutido como conhecimento implícito noEmpréstimo construtores?
-Bastante. Se você chamar o primeiro construtor, que aceita três parâmetros, receberá
-um empréstimo a prazo. Mas se você quiser um revólver, precisará chamar um dos
-construtores que pegam duas datas e depois fornecem null para a data de vencimento.
-Eu me pergunto se todos os usuários deste código saberão disso? Ou eles apenas
-terão que aprender encontrando alguns defeitos feios?
+O que mais está embutido como conhecimento implícito no `Loan` construtores? Bastante. Se você chamar o primeiro construtor, que aceita três parâmetros, receberá um empréstimo a prazo. Mas se você quiser um revólver, precisará chamar um dos construtores que pegam duas datas e depois fornecem null para a data de vencimento. Eu me pergunto se todos os usuários deste código saberão disso? Ou eles apenas terão que aprender encontrando alguns defeitos feios?
 
-Vamos ver o que acontece quando eu aplico oSubstituir construtores por
-métodos de criaçãoreestruturação.
+Vamos ver o que acontece quando eu aplico a restruturação **Replace Constructors with Creation Methods**.
 
-1 -Meu primeiro passo é encontrar um cliente que ligue para um dosEmpréstimo's
-construtores. Aqui está um chamador que reside em um caso de teste:
+1 -Meu primeiro passo é encontrar um cliente que ligue para um dos `Loan` 's construtores. Aqui está um chamador que reside em um caso de teste:
 
 ```java
 public class CapitalCalculationTests... 
@@ -325,8 +177,8 @@ public class CapitalCalculationTests...
     }
 ```
 
-Neste caso, uma chamada para o acimaEmpréstimoconstrutor produz um
-empréstimo a prazo. eu aplicoExtrair Método[F ] nessa chamada para produzir
+Neste caso, uma chamada para o acima `Loan` construtor produz um
+empréstimo a prazo. eu aplico Extrair Método [F] nessa chamada para produzir
 um método estático público chamadocriarTermLoan:
 
 ```java
@@ -339,7 +191,7 @@ public static Loan createTermLoan(double commitment, int riskRating, Date maturi
 }
 ```
 
-A seguir, aplicoMétodo de movimentação[F ] sobre o método de criação,criarTermLoan, para movê-lo paraEmpréstimo. Isso produz as
+A seguir, aplico Método de movimentação [F] sobre o método de criação, `createTermLoan`, para movê-lo para `Loan` . Isso produz as
 seguintes alterações:
 
 ```java
@@ -358,7 +210,7 @@ public class CapitalCalculationTest...
 
 Eu compilo e testo para confirmar se tudo funciona.
 
-2.Em seguida, encontro todos os chamadores no construtor
+2 - Em seguida, encontro todos os chamadores no construtor
 que criarTermLoanchamadas, e eu as atualizo para ligar
 criarTermLoan. Por exemplo:
 
@@ -398,8 +250,8 @@ public class Loan...
 
 Eu compilo e testo para confirmar se a alteração funciona.
 4 - Agora repito os passos 1–3 para produzir métodos de criação adicionais
-emEmpréstimo. Por exemplo, aqui está um código que chama
-EmpréstimoConstrutor catch-all de:
+em `Loan` . Por exemplo, aqui está um código que chama
+ `Loan` Construtor catch-all de:
 
 ```java
 public class CapitalCalculationTest... 
@@ -429,9 +281,11 @@ public class CapitalCalculationTest...
     } 
     
 public class Loan...
+    
     public static Loan createTermLoan(double commitment, int riskRating, Date maturity) {
         return new Loan(commitment, 0.00, riskRating, maturity, null);
     }
+
     public static Loan createTermLoan(CapitalStrategy riskAdjustedCapitalStrategy, 
 double commitment, double outstanding, int riskRating, Date maturity) {
         return new Loan(riskAdjustedCapitalStrategy, commitment, outstanding, riskRating, maturity, null);
@@ -445,13 +299,13 @@ doCapitalEstratégiaparâmetro suficientementecomunicou a diferença entre as du
 sobrecarregadas decriarTermLoan(...).
 
 Agora, para a etapa 2 da refatoração. Porque o novo criarTermLoan(...)
-chamadasEmpréstimoconstrutor abrangente de ', devo
+chamadas `Loan` construtor abrangente de ', devo
 encontre outros clientes que chamem o construtor catch-all para instanciar o
-mesmo tipo deEmpréstimoproduzido porcriarTermLoan(...). Esse
+mesmo tipo de `Loan` produzido porcriarTermLoan(...). Esse
 requer um trabalho cuidadoso porque alguns chamadores do construtor
-catch-all produzem revólver ou instâncias RCTL deEmpréstimo. Então eu
+catch-all produzem revólver ou instâncias RCTL de `Loan` . Então eu
 atualize apenas o código do cliente que produz instâncias de empréstimo a prazo de
-Empréstimo.
+ `Loan` .
 
 Não preciso executar nenhum trabalho para a etapa 3 porque o construtor
 catch-all não está acorrentado a nenhum outro construtor. Continuo
@@ -461,14 +315,14 @@ termino, termino com os seguintes métodos de criação:
 06-01-creation-methods-02.png
 
 5.A última etapa é alterar a visibilidade do único construtor
-público restante, que éEmpréstimoé pega-tudo
+público restante, que é `Loan` é pega-tudo
 construtor. Como ele não tem subclasses e agora não tem
 chamadores externos, eu o torno privado:
 
 Eu compilo para confirmar que tudo ainda funciona. A refatoração está
 completa.
 
-Agora está claro como obter diferentes tipos deEmpréstimoinstâncias. As
+Agora está claro como obter diferentes tipos de `Loan` instâncias. As
 ambigüidades foram reveladas e o conhecimento implícito foi explicitado. O
 que resta fazer? Bem, como os métodos de criação usam um número
 razoavelmente grande de parâmetros, pode fazer sentido aplicar Introduzir
@@ -476,6 +330,7 @@ Objeto de Parâmetro[F ].
 
 ```java
 public class Loan... 
+    
     private Loan(CapitalStrategy capitalStrategy, double commitment, double outstanding, int riskRating, Date maturity, Date expiry)
         ...
 ```
@@ -670,7 +525,7 @@ cria (por exemplo,NodeFactory,LoanFactory).
 
 Compilar.
 
-3 - AplicarMétodo de movimentação[F ] para mover o Método de Criação para a fábrica. Se o Método de
+3 - Aplicar Método de movimentação [F] para mover o Método de Criação para a fábrica. Se o Método de
 Criação for estático, você pode torná-lo não estático depois de movê-lo para a fábrica.
 
 Compilar.
@@ -756,7 +611,7 @@ public class NodeFactory {
 }
 ```
 
-3.A seguir, aplicoMétodo de movimentação[F ] moverStringNodeMétodo de criação de NodeFactory
+3.A seguir, aplico Método de movimentação [F] moverStringNodeMétodo de criação de NodeFactory
 . Decido tornar o método movido não estático porque não quero que o código do cliente seja
 vinculado estaticamente a uma implementação de fábrica. Eu também decido deletar o Método de
 Criação emStringNode:
@@ -1416,8 +1271,7 @@ Depois de escrever o DOMBuilder-, eu tinha nove métodos de teste que eram quase
 
 **Se**
 
-Building a Composite is repetitive, complicated, or error-
-prone.
+Building a Composite is repetitive, complicated, or error-prone.
 
 **Refatore para:**
 
@@ -2374,7 +2228,7 @@ classe absorvente.
 
 Compilar e testar.
 
-3 - UsarMétodo de movimentação[F ] eMover campo[F ] para mover recursos
+3 - Usar Método de movimentação [F] eMover campo[F ] para mover recursos
 do Singleton para a classe absorvente até que não haja mais nada.
 
 Como na etapa 1, se sua classe absorvente não for um Singleton, remova
@@ -2526,7 +2380,7 @@ public class Blackjack {
 Neste ponto eu compilo, executo meus testes automatizados e jogo o jogo no
 console para confirmar se tudo está funcionando corretamente.
 
-3 - agora posso aplicarMétodo de movimentação[F ] eMover campo[F ] para obter
+3 - agora posso aplicar Método de movimentação [F] eMover campo[F ] para obter
 todos Consolecaracterísticas devinte-e-um. Quando termino, compilo eteste para ter certeza quevinte-e-umainda funciona.
 
 4 - Agora eu apagoConsolee, como Martin recomenda em seuClasse Inline[F ]
