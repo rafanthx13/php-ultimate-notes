@@ -1,9 +1,3 @@
----
-layout: post
-title: PHP Study Guide
-description: ZCE
----
-
 # Chapter 01 - What Is Clean Code and Why Should You Care?
 
 Significado de PHP: **H**ypertext **P**re**P**rocessor
