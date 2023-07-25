@@ -1,4 +1,4 @@
-.
+# Chapter 3. Patterns
 
 ## What Is a Pattern?
 
@@ -16,28 +16,13 @@ O padrão é, em resumo, ao mesmo tempo uma coisa que acontece no mundo e a regr
 
 """
 
-Our industry's view of patterns has mostly been influenced by
-catalogs of individual patterns, such as those found in Design
-Patterns [DP] and Martin Fowler's Patterns of Enterprise
-Application Architectures [Fowler, PEAA]. Such catalogs don't
-actually contain stand-alone patterns because authors typically
-discuss which alternative patterns to consider if a pattern
-doesn't provide a good fit. In recent years, we've also seen the
-emergence of literature that resembles Alexander's pattern
-languages. Such works include Extreme Programming
-Explained [Beck, XP], Domain-Driven Design [Evans], and
-Checks: A Pattern Language of Information Integrity
-[Cunningham].
+Our industry's view of patterns has mostly been influenced by catalogs of individual patterns, such as those found in Design Patterns [DP] and Martin Fowler's Patterns of Enterprise Application Architectures [Fowler, PEAA]. Such catalogs don't actually contain stand-alone patterns because authors typically discuss which alternative patterns to consider if a pattern doesn't provide a good fit. In recent years, we've also seen the emergence of literature that resembles Alexander's pattern languages. Such works include Extreme Programming Explained [Beck, XP], Domain-Driven Design [Evans], and Checks: A Pattern Language of Information Integrity [Cunningham].
 
 ## Patterns Happy
 
 A ânsia e alegria em querer usar os DesignPattersn o tempo todo pode resultar em uma soluçâo super-etensivel e MUITO TRABHLO quando nâo se precisa.
 
-O exemplo a seguir é de um HelloWorld
-A programmer named Jason Tiscioni, writing on SlashDot (see
-http://developers.slashdot.org/comments.pl?
-sid=33602&cid=3636102), perfectly caricatured patterns-happy
-code with the following version of Hello World.
+O exemplo a seguir é de um HelloWorld A programmer named Jason Tiscioni, writing on SlashDot (see http://developers.slashdot.org/comments.pl? sid=33602&cid=3636102), perfectly caricatured patterns-happy code with the following version of Hello World. 
 
 ````java
 interface MessageStrategy {
@@ -98,18 +83,9 @@ mb.send(strategy);
 }
 ````
 
-Talvez seja impossível evitar a felicidade dos padrões no caminho
-para aprender padrões. Na verdade, a maioria de nós aprende
-cometendo erros. Já fui padrão feliz em mais de uma ocasião.
-A verdadeira alegria dos padrões vem de usá-los com sabedoria. A
-refatoração nos ajuda a fazer isso concentrando nossa atenção na remoção.
+ Talvez seja impossível evitar a felicidade dos padrões no caminho para aprender padrões. Na verdade, a maioria de nós aprende cometendo erros. Já fui padrão feliz em mais de uma ocasião. A verdadeira alegria dos padrões vem de usá-los com sabedoria. A refatoração nos ajuda a fazer isso concentrando nossa atenção na remoção. 
 
-
-de duplicações, simplificando o código e fazendo com que o código
-comunique sua intenção. Quando os padrões evoluem para um sistema por
-meio de refatoração, há menos chance de superengenharia com padrões.
-Quanto melhor você conseguir refatorar, mais chances terá de encontrar a
-alegria dos padrões.
+de duplicações, simplificando o código e fazendo com que o código comunique sua intenção. Quando os padrões evoluem para um sistema por meio de refatoração, há menos chance de superengenharia com padrões. Quanto melhor você conseguir refatorar, mais chances terá de encontrar a alegria dos padrões.
 
 ## There Are Many Ways to Implement a Pattern
 
@@ -141,7 +117,7 @@ Durante os meses seguintes, eles programaram o site seguindo o design estabeleci
 
 Embora o design antecipado (BDUF) seja frequentemente problemático, neste caso específico ele foi essencial para o sucesso do projeto, pois permitiu que a empresa ganhasse o contrato. O design inicial com os padrões Command e Interpreter foi crucial. No entanto, o projeto enfrentou atrasos de um mês devido a problemas com navegadores de internet e a necessidade de fazer modificações para lidar com defeitos específicos dos navegadores.
 
-Após essa experiência, o autor passou a adotar uma abordagem de evolução do sistema e refatoração de padrões em projetos futuros, com exceção do padrão Command, que continuou sendo usado no início do design. O autor reconhece que o design antecipado com padrões tem seu lugar, mas deve ser utilizado com moderação.
+Após essa experiência, o autor passou a adotar uma abordagem de evolução do sistema e refatoração de padrões em projetos futuros, com exceção do padrão Command, que continuou sendo usado no início do design. O autor reconhece que o design antecipado com padrões tem seu lugar, mas deve ser utilizado com moderação. 
 
 
 

@@ -90,7 +90,7 @@ Martin Fowler faz uma observação semelhante perto do início de Reestruturaç�
 
 > Existe uma relação natural entre padrões e refatorações. Os padrões estão onde você quer estar; refatorações são maneiras de chegar lá de outro lugar. Design Patterns (GOF)
 
-## Evolutionary Desig
+## Evolutionary Design
 
 Se você deseja obter o máximo dos padrões, deve fazer a mesma coisa: veja os padrões no contexto da refatoração, não apenas comoelementos  reutilizáveis que existem fora da refatoração. Esta é minha principal razão para produzir um catálogo de refatorações direcionadas a padrões.
 
