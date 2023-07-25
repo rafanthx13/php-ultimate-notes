@@ -150,12 +150,8 @@ Lanyon has two branches, but only one is used for active development.
 
 Open sourced under the [MIT license](LICENSE.md).
 
-## Next Passos
+## Como funciona
 
-+ Colocar todas as imagens em README do martinfolwer (x)
-+ Padronizar H1 de todos os casos e deixar um prefix (clean code, martin folwer, design)
-+ Remover pasta x
-+ Limpar inicio de cada seçâo de matinfolwer e direcionar para o READM com as imagens (x)
-+ Criar um resume das coisa do design (um resumo para cada coisa, propostioto e que padrao de prjeto usa)
-
-# M.Folwer Refactoring - 00 - Prefácio
+1 - Os caps dos livros vão ficar na pata `awesome-books` e nâo ficar em `_posts`. 
+2 - No Menu, o README sempre aparece primeiro na ordem
+3 - No Menu, O título será o H1 da página, devera ser padronizado, e a ordem será alfabetico salvo README que fica na frente 
