@@ -1,4 +1,4 @@
-# Chapter 12 - Working in a Team
+# 12 - Working in a Team
 
 ## Intro
 

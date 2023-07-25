@@ -1,4 +1,4 @@
-# Best - PHP Clean Code
+# PHP Clean Code - Best Of
 
 ## 01 - What Is Clean Code and Why Should You Care?
 

@@ -1,5 +1,4 @@
-## Chapter 11 - Continuous Integation
-
+# 11 - Continuous Integation
 
 ## Intro ao que vamos ver
 

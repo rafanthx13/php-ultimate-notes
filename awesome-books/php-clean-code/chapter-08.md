@@ -1,4 +1,4 @@
-# Chapter 08 - Code Quality Metrics
+# 08 - Code Quality Metrics
 
 ## Intro
 

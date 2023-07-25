@@ -1,41 +1,16 @@
-# Code Smells
+# Chapter 4. Code Smells
 
-> Quando você aprender a olhar para suas palavras com
-desapego crítico, descobrirá que reler uma peça cinco ou
-seis vezes seguidas trará à luz novos pontos
-problemáticos. [Barzun , 229]
+> Quando você aprender a olhar para suas palavras com desapego crítico, descobrirá que reler uma peça cinco ou seis vezes seguidas trará à luz novos pontos problemáticos. [Barzun , 229]
 
-Refatorar, ou melhorar o design do código existente, requer que você
-saiba qual código precisa ser melhorado. Catálogos de refatorações
-ajudam você a obter esse conhecimento, mas sua situação pode ser
-diferente do que você vê em um catálogo. Portanto, é necessário
-aprender problemas de design comuns para que você possa reconhecêlos em seu próprio código.
+Refatorar, ou melhorar o design do código existente, requer que você saiba qual código precisa ser melhorado. Catálogos de refatorações ajudam você a obter esse conhecimento, mas sua situação pode ser diferente do que você vê em um catálogo. Portanto, é necessário aprender problemas de design comuns para que você possa reconhecêlos em seu próprio código.
 
-Em seu capítulo "Bad Smells in Code" emReestruturação[F ], Martin
-Fowler e Kent Beck fornecem orientação adicional para identificar
-problemas de projeto. Eles comparam problemas de design a
-Traduzido do Inglês para o Português - www.onlinedoctranslator.com
-cheiros e explique quais refatorações, ou combinações de
-refatorações, funcionam melhor para eliminar os odores.
+Em seu capítulo "Bad Smells in Code" emReestruturação[F ], Martin Fowler e Kent Beck fornecem orientação adicional para identificar problemas de projeto. Eles comparam problemas de design a Traduzido do Inglês para o Português - www.onlinedoctranslator.com cheiros e explique quais refatorações, ou combinações de refatorações, funcionam melhor para eliminar os odores.
 
-O código de Fowler e Beck detecta problemas de destino que ocorrem
-em todos os lugares: em métodos, classes, hierarquias, pacotes
-(namespaces, módulos) e sistemas inteiros. Os nomes de seus cheiros,
-como Feature Envy, Primitive Obsession e Speculative Generality,
-fornecem um vocabulário rico e colorido com o qual os programadores
-podem se comunicar rapidamente sobre problemas de design.
+O código de Fowler e Beck detecta problemas de destino que ocorrem em todos os lugares: em métodos, classes, hierarquias, pacotes (namespaces, módulos) e sistemas inteiros. Os nomes de seus cheiros, como Feature Envy, Primitive Obsession e Speculative Generality, fornecem um vocabulário rico e colorido com o qual os programadores podem se comunicar rapidamente sobre problemas de design.
 
-Decidi que seria útil descobrir quais dos 22 cheiros de código de
-Fowler e Beck são abordados pelas refatorações que apresento neste
-livro. Ao concluir esta tarefa, descobri 5 novos cheiros de código que
-sugerem a necessidade de refatorações direcionadas a padrões. Ao
-todo, as refatorações neste livro tratam de 12 code smells.
+Decidi que seria útil descobrir quais dos 22 cheiros de código de Fowler e Beck são abordados pelas refatorações que apresento neste livro. Ao concluir esta tarefa, descobri 5 novos cheiros de código que sugerem a necessidade de refatorações direcionadas a padrões. Ao todo, as refatorações neste livro tratam de 12 code smells.
 
-Tabela 4.1 lista os 12 cheiros e algumas refatorações a serem
-consideradas quando você quiser remover os cheiros. A melhor
-maneira de desodorizar esses cheiros é considerar as refatorações
-associadas. As seções neste capítulo discutem cada um dos 12 cheiros e
-fornecem orientação para quando usar as diferentes refatorações.
+Tabela 4.1 lista os 12 cheiros e algumas refatorações a serem consideradas quando você quiser remover os cheiros. A melhor maneira de desodorizar esses cheiros é considerar as refatorações associadas. As seções neste capítulo discutem cada um dos 12 cheiros e fornecem orientação para quando usar as diferentes refatorações. 
 
 tabela de bad smell (bad-smell-table.md)
 
@@ -54,13 +29,6 @@ tabela de bad smell (bad-smell-table.md)
 | Combinatorial Explosion                        | Replace Implicit Language with Interpreter                   |
 | Oddball Solution                               | Unify Interfaces with Adapter                                |
 
-
-
-
-
-
-
- 
 
 ## Código duplicado (Duplicated Code)
 

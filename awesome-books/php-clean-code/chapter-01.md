@@ -1,4 +1,4 @@
-# Chapter 01 - What Is Clean Code and Why Should You Care?
+# 01 - What Is Clean Code and Why Should You Care?
 
 Significado de PHP: **H**ypertext **P**re**P**rocessor
 

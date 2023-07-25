@@ -1,4 +1,4 @@
-# Chapter 10 - Automated Testing
+# 10 - Automated Testing
 
 ## Intro
 

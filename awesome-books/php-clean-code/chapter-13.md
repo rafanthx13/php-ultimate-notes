@@ -120,6 +120,7 @@ Neste capítulo, discutimos como criar documentação que possa ajudá-lo a alca
 ## Meu Resumo
 
 Documentar:
+
 + Porque fazer: Facilitar o trabalho de quem pegar o código
 + O que documentar:
   - Configurações
@@ -128,7 +129,8 @@ Documentar:
   - Diretrizes e padrões usados
   - Documentar API
 
-Formas de documentar 
+Formas de documentar:
+
 + Texto: Via Markdown
 + Diagrama: Há as seguintes opções
   - Uma ferramenta versátil é https://www.diagrams.net
@@ -138,6 +140,7 @@ Formas de documentar
   - Diagrams-MinGrammer: https://diagrams.mingrammer.com
 
 Quando comentários no código são bons:
+
 + Quando forem DocBlocks
 + Quando o comentário evita confusão
 + Para descrever algoritmos complexos
