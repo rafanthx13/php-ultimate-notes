@@ -150,4 +150,10 @@ Lanyon has two branches, but only one is used for active development.
 
 Open sourced under the [MIT license](LICENSE.md).
 
-<3
+## Next Passos
+
++ Colocar todas as imagens em README do martinfolwer
++ Padronizar H1 de todos os casos e deixar um prefix (clean code, martin folwer, design)
++ Remover pasta x
++ Limpar inicio de cada seçâo de matinfolwer e direcionar para o READM com as imagens
++ Criar um resume das coisa do design (um resumo para cada coisa, propostioto e que padrao de prjeto usa)
