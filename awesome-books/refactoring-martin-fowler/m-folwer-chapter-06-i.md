@@ -1,4 +1,4 @@
-# Resume - MartinFolwer - Cap 6 - Basic Refactorings
+# M.Folwer Refactoring - 06 - Basic Refactorings
 
 ![](https://raw.githubusercontent.com/rafanthx13/php-ultimate-notes/main/awesome-books/refactoring-martin-fowler/resume/06/06-01-extract-funciton.png)
 

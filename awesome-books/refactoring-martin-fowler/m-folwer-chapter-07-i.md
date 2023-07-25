@@ -1,4 +1,4 @@
-# Encapsulation
+# M.Folwer Refactoring - 07 - Encapsulation
 
 + Encapsulate Record (162)
 

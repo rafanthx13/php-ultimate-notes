@@ -1,4 +1,4 @@
-# Dealing with Inheritance
+# M.Folwer Refactoring - 12 -  Dealing with Inheritance
 
 + Pull Up Method (350)
 

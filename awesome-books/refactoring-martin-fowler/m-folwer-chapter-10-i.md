@@ -1,4 +1,4 @@
-# Simplifying Conditional Logic
+# M.Folwer Refactoring - 10 - Simplifying Conditional Logic
 
 + Decompose Conditional (260)
 
